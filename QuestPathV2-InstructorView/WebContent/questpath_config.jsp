@@ -67,8 +67,7 @@
 	%>
 <bbNG:jsBlock>
 <script type="text/javascript">
-	<%
-	String questString = proc.qpUtil.toJson(proc.qPaths);%>
+	<%String questString = proc.qpUtil.qpathsToJson(proc.qPaths);%>
 	var quests = <%=questString%>;
 	var questLayout = <%=proc.qLayout%>;
 	var questTier = <%=proc.questTier%>;
