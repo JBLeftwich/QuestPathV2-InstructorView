@@ -71,8 +71,7 @@
 %>
 <bbNG:jsBlock>
 <script type="text/javascript">
-<%
-String questString = proc.qpUtil.toJson(proc.qPaths);%>
+<%String questString = proc.qpUtil.qpathsToJson(proc.qPaths);%>
 var quests = <%=questString%>;
 var questLayout = <%=proc.qLayout%>;
 var questTier = <%=proc.questTier%>;
@@ -94,11 +93,12 @@ var questDraggable = false;
 </div>
 </div>
 <%
-for (CourseMembership cm : proc.courseMembers) {
-%>
-<%=cm.getRoleAsString() + ":" + cm.getPersonalInfo() + ":" + cm.getUser().getGivenName() + ":" + cm.getUser().getFamilyName() %>
-<%
+String statString = "";
+if (proc.isUserAnInstructor) {
+	statString = proc.qpUtil.statsToJson(proc.courseStats);
 }
 %>
+<%=statString %>
+<%=proc.debugString %>
 </body>
 </bbNG:includedPage>

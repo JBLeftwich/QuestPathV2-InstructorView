@@ -11,7 +11,6 @@ import blackboard.data.content.Content;
 import blackboard.data.content.avlrule.AvailabilityCriteria;
 import blackboard.data.content.avlrule.AvailabilityRule;
 import blackboard.data.content.avlrule.GradeRangeCriteria;
-import blackboard.data.course.CourseMembership;
 import blackboard.data.gradebook.Lineitem;
 import blackboard.data.gradebook.Score;
 import blackboard.data.gradebook.impl.OutcomeDefinition;
@@ -20,11 +19,11 @@ import blackboard.persist.KeyNotFoundException;
 import blackboard.persist.PersistenceException;
 import blackboard.persist.content.avlrule.AvailabilityCriteriaDbLoader;
 import blackboard.persist.gradebook.impl.OutcomeDefinitionDbLoader;
-import blackboard.platform.context.Context;
 
 import com.jsu.cs521.questpath.buildingblock.object.QuestPath;
 import com.jsu.cs521.questpath.buildingblock.object.QuestPathItem;
 import com.jsu.cs521.questpath.buildingblock.object.QuestRule;
+import com.jsu.cs521.questpath.buildingblock.object.QuestStats;
 import com.jsu.cs521.questpath.buildingblock.object.RuleCriteria;
 
 /**
@@ -130,7 +129,7 @@ public class QuestPathUtil {
 	 * @param lineitems
 	 * @return
 	 */
-	public List<QuestPathItem> buildInitialList(Context ctx, List<Content> contentItems, List<Lineitem> lineitems) {
+	public List<QuestPathItem> buildInitialList(Id cmID, List<Content> contentItems, List<Lineitem> lineitems, boolean buildContent) {
 		List<QuestPathItem> initialList = new ArrayList<QuestPathItem>();
 		for (Content c : contentItems) {
 			QuestPathItem newQP = new QuestPathItem();
@@ -142,7 +141,7 @@ public class QuestPathUtil {
 					if (li.getType().equals("Assignment") || li.getType().equals("Test")) {
 						newQP.setPointsPossible(li.getPointsPossible());
 						for (Score score : li.getScores()) {
-							if (score.getCourseMembershipId().equals(ctx.getCourseMembership().getId())) {
+							if (score.getCourseMembershipId().equals(cmID)) {
 								if (score.getOutcome().getScore() > newQP.getPointsEarned()) {
 									newQP.setPointsEarned(score.getOutcome().getScore());
 								}
@@ -155,7 +154,9 @@ public class QuestPathUtil {
 				}
 			}
 			initialList.add(newQP);
-			contentMap.put(c.getId().getExternalString(), c.getTitle());
+			if (buildContent) {
+				contentMap.put(c.getId().getExternalString(), c.getTitle());
+			}
 		}
 		return initialList;
 	}
@@ -390,9 +391,19 @@ public class QuestPathUtil {
 		return qp;
 	}
 	
-	public String toJson(List<QuestPath> qPaths) {
+	public String qpathsToJson(List<QuestPath> qPaths) {
 		try {
 		JSONArray jA = new JSONArray(qPaths);
+		return jA.toString();
+		}
+		catch (Exception e) {
+			return e.getLocalizedMessage();
+		}
+	}
+	
+	public String statsToJson(List<QuestStats> stats) {
+		try {
+		JSONArray jA = new JSONArray(stats);
 		return jA.toString();
 		}
 		catch (Exception e) {

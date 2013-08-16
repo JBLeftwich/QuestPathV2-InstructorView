@@ -47,6 +47,18 @@ public class QuestStats {
 		return lockedCount;
 	}
 
+
+	public void incrementPassedCount() {
+		this.passedCount ++;
+	}
+	public void incrementAttemptedCount() {
+		this.attemptedCount ++;
+	}
+	public void incrementLockedCount() {
+		this.lockedCount ++;
+	}
+
+	
 	public void setLockedCount(int lockedCount) {
 		this.lockedCount = lockedCount;
 	}

@@ -43,7 +43,7 @@ public class Processor {
 	List<List<GraphTier>> allTiers = new ArrayList<List<GraphTier>>();
 	public String debugString = "";
 	public List<CourseMembership> courseMembers = new ArrayList<CourseMembership>();
-	public List<QuestStats> courseStatus = new ArrayList<QuestStats>();
+	public List<QuestStats> courseStats = new ArrayList<QuestStats>();
 /**
  * This method builds a QuestPath for each initial Quest Path Item
  * It then loops through the remaining Quest Path Items to apply them
@@ -153,7 +153,9 @@ public class Processor {
 		try {
 			Id courseID = ctx.getCourseId();
 			String sessionUserRole = ctx.getCourseMembership().getRoleAsString();
+			Id ctxId = ctx.getCourseMembership().getId();
 			
+		
 			courseMembers = 
 					CourseMembershipDbLoader.Default.getInstance().loadByCourseIdAndRole(courseID, CourseMembership.Role.STUDENT, null, true);
 			
@@ -181,19 +183,19 @@ public class Processor {
 				qLayout = "null";
 			}
 			
-			List<CourseMembership> processList = new ArrayList<CourseMembership>();
-			if (isUserAnInstructor) {
-				processList.addAll(courseMembers);
-			}
-			else {
-				processList.add(ctx.getCourseMembership());
-			}
+//			List<CourseMembership> processList = new ArrayList<CourseMembership>();
+//			if (isUserAnInstructor) {
+//				processList.addAll(courseMembers);
+//			}
+//			else {
+//				processList.add(ctx.getCourseMembership());
+//			}
 			
 			//Load grades for gradable Lineitems
 			LineitemDbLoader lineItemDbLoader = LineitemDbLoader.Default.getInstance();
 			List<Lineitem> lineitems = lineItemDbLoader.loadByCourseId(ctx.getCourseId());
 
-			List<QuestPathItem> itemList = qpUtil.buildInitialList(ctx, children, lineitems);
+			List<QuestPathItem> itemList = qpUtil.buildInitialList(ctxId, children, lineitems,true);
 
 			//Create Loaders for Availability Rules, Criteria and Outcome
 			//These loaders will allow us to capture Adaptive Release Information
@@ -221,13 +223,57 @@ public class Processor {
 			else {
 				questTier = "null";
 			}
-			
-			
+
 			//If Instructor
-			//Create Dummy QuestItemList
-			//Process updateQuestPathItem with Line Item Info
-			//Call qpUtil.setGradablePathItemStatus
-			//setLockorUnlocked
+			if (isUserAnInstructor) {
+				courseStats = buildInitQS(qPaths);
+				List<QuestPathItem> tempList = new ArrayList<QuestPathItem>();
+				//Loop thru all student id's to build their Quest Path 
+				for (CourseMembership cm : courseMembers) {
+					tempList = qpUtil.buildInitialList(cm.getId(), children, lineitems, false);
+					tempList = qpUtil.setParentChildList(tempList, questRules);
+					tempList = qpUtil.setInitialFinal(tempList);
+					tempList = qpUtil.removeNonAdaptiveReleaseContent(tempList);
+					tempList = qpUtil.setGradableQuestPathItemStatus(tempList,questRules);
+					tempList = qpUtil.setLockOrUnlocked(tempList, questRules);
+					List<QuestPath> tempPaths = this.buildQuests(tempList);
+					List<String> procExtId = new ArrayList<String>();
+					String studentName = cm.getUser().getFamilyName() + ", " + cm.getUser().getGivenName();
+					for (QuestStats courseStat : courseStats) {
+						for (QuestPath qp : tempPaths) {
+							for (QuestPathItem qi : qp.getQuestPathItems()) {
+								if(!procExtId.contains(qi.getExtContentId())) {
+									if (qi.getExtContentId().equals(courseStat.getExternalContenId())) {
+										if (qi.isUnLocked() && qi.isPassed()) {
+											courseStat.incrementPassedCount();
+											courseStat.getPassedStudents().add(studentName);
+										}
+										else if (qi.isUnLocked() && !qi.isGradable()) {
+											courseStat.incrementPassedCount();
+											courseStat.getPassedStudents().add(studentName);
+										}
+										else if (qi.isAttempted() && qi.isUnLocked()) {
+											courseStat.incrementAttemptedCount();
+											courseStat.getAttemptedStudents().add(studentName);
+										}
+										else if (qi.isUnLocked()) {
+											courseStat.incrementAttemptedCount();
+											courseStat.getAttemptedStudents().add(studentName);
+										}
+										else {
+											courseStat.incrementLockedCount();
+											courseStat.getLockedStudents().add(studentName);
+										}
+										procExtId.add(qi.getExtContentId());
+										break;
+									}
+								}
+							}
+						}
+						
+					}
+				}				
+			}
 
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -245,9 +291,11 @@ public class Processor {
 					QuestStats initStat = new QuestStats();
 					initStat.setExternalContenId(qpI.getExtContentId());
 					initStats.add(initStat);
+					procID.add(qpI.getExtContentId());
 				}
 			}
 		}
 		return initStats;
 	}
+	
 }
