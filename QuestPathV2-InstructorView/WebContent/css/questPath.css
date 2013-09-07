@@ -5,6 +5,12 @@
 	padding: 1.0m;
 }
 
+.chartDiv {
+/* 	z-index:9999; */
+/* 	background-color: blue; */
+/* 	position: absolute; */
+}
+
 .questItem { 
 	border:0.1em dotted #d4e06b; 
 	opacity:0.8; 

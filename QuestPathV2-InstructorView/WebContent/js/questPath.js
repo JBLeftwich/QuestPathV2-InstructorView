@@ -78,7 +78,12 @@ function waitForDependencies() {
 		|| typeof uiMinLoaded === 'undefined' || typeof uiTouchLoaded === 'undefined') {        
 		setTimeout(waitForDependencies, 0200);}    
 	else {
-		jsPlumb.bind("ready", function() {initLayout(); moveItems(); setTimeout(jsPlumbDemo.init, 0200);});
+		jsPlumb.bind("ready", function() {
+			initLayout(); 
+			moveItems(); 
+			setTimeout(jsPlumbDemo.init, 0200); 
+			if(instructorView) {reportingFunction('Hello');}
+		});
 	}
 }
 

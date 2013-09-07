@@ -5,7 +5,7 @@ import java.util.List;
 
 public class QuestStats {
 
-	private String externalContenId;
+	private String externalContentId;
 	private int passedCount;
 	private int attemptedCount;
 	private int lockedCount;
@@ -19,12 +19,12 @@ public class QuestStats {
 		this.lockedCount = 0;
 	}
 
-	public String getExternalContenId() {
-		return externalContenId;
+	public String getExternalContentId() {
+		return externalContentId;
 	}
 
-	public void setExternalContenId(String externalContenId) {
-		this.externalContenId = externalContenId;
+	public void setExternalContentId(String externalContentId) {
+		this.externalContentId = externalContentId;
 	}
 
 	public int getPassedCount() {

@@ -39,6 +39,7 @@
 			proc.QPDriver(ctx);
 	%>
 <bbNG:cssFile href="<%=cssPath1%>"/>
+<bbNG:cssFile href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
 <bbNG:cssBlock>
 <style>
 .questItem {
@@ -59,12 +60,12 @@
 %>
 			<div id="<%=qpI.getExtContentId()%>" class="questItem <%=qpAtt.getStatusClassName() %>"
 			title="<%=qpAtt.getTitle()%>" 
-			<% if (!qpI.isLocked()) { %>
+			<% if (!qpI.isLocked() && !proc.isUserAnInstructor) { %>
 			ondblclick="openAssignment('execute/uploadAssignment?content_id=<%=qpI.getExtContentId()%>&course_id=<%=ctx.getCourseId().toExternalString()%>&assign_group_id=&mode=view');"
 			<%} %>><%=qpI.getName()%></div>
 		<%
 			procQI.add(qpI.getExtContentId());
-			}
+			}	
 		}
 		j++;
 	}
@@ -77,13 +78,16 @@ var questLayout = <%=proc.qLayout%>;
 var questTier = <%=proc.questTier%>;
 var questsLoaded = true;
 var questDraggable = false;
+var instructorView = <%=proc.isUserAnInstructor%>;
 </script>
 <script type="text/javascript">
 <jsp:include page="js/jquery.min.js" />
 <jsp:include page="ScriptFile.jsp" />
 <jsp:include page="js/jquery.jsPlumb-1.3.16-all-min.js" />
 <jsp:include page="js/jquery.ui.touch-punch.min.js" />
+<jsp:include page="js/highcharts.js" />
 <jsp:include page="js/questPath.js" />
+<jsp:include page="js/qpInstructorView.js" />
 </script>
 </bbNG:jsBlock>
 <div class="legend"><h5>LEGEND</h5>
@@ -91,6 +95,10 @@ var questDraggable = false;
 <div class="legendColor unlockedLegend">Unlocked</div>
 <div class="legendColor locked">Locked</div>
 </div>
+</div>
+<div id='chartDiv' title="Quest Item" class='chartDiv'>
+	<div id="container" style="height: 300px; width: 300px"></div>
+	<div id="reporting"></div>
 </div>
 <%
 String statString = "";

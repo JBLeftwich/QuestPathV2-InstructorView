@@ -243,7 +243,7 @@ public class Processor {
 						for (QuestPath qp : tempPaths) {
 							for (QuestPathItem qi : qp.getQuestPathItems()) {
 								if(!procExtId.contains(qi.getExtContentId())) {
-									if (qi.getExtContentId().equals(courseStat.getExternalContenId())) {
+									if (qi.getExtContentId().equals(courseStat.getExternalContentId())) {
 										if (qi.isUnLocked() && qi.isPassed()) {
 											courseStat.incrementPassedCount();
 											courseStat.getPassedStudents().add(studentName);
@@ -289,7 +289,7 @@ public class Processor {
 			for(QuestPathItem qpI: quest.getQuestPathItems()) {
 				if(!procID.contains(qpI.getExtContentId())) {
 					QuestStats initStat = new QuestStats();
-					initStat.setExternalContenId(qpI.getExtContentId());
+					initStat.setExternalContentId(qpI.getExtContentId());
 					initStats.add(initStat);
 					procID.add(qpI.getExtContentId());
 				}
