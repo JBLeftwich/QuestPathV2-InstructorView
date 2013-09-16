@@ -106,7 +106,7 @@ if (proc.isUserAnInstructor) {
 	statString = proc.qpUtil.statsToJson(proc.courseStats);
 }
 %>
-<%=statString %>
+<!--%=//statString %-->
 <%=proc.debugString %>
 </body>
 </bbNG:includedPage>

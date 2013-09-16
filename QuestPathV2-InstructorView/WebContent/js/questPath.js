@@ -6,12 +6,9 @@
  * Initial function to draw connectors after quest items have been put in place
  */
 (function() {
-
 	window.jsPlumbDemo = {
-
 			init : function() {			
 				//jsPlumb.setRenderMode(jsPlumb.VML);
-
 				var color = "black";
 				jsPlumb.importDefaults({
 					Connector : [ "Bezier", { curviness:40 } ],
@@ -22,13 +19,8 @@
 					EndpointHoverStyle : {fillStyle:"#ec9f2e" },			
 					Anchors :  [ "AutoDefault", "AutoDefault" ]
 				});
-
-
-
 				var arrowCommon = { foldback:1.0, fillStyle:color, width:14 },
-
 				overlays = [[ "Arrow", { location:0.5 }, arrowCommon ]];
-
 				var procQuests = new Array();
 				for (var i = 0; i < quests.length; i++) {
 					for (var j = 0; j < quests[i].questPathItems.length; j++) {
@@ -82,7 +74,25 @@ function waitForDependencies() {
 			initLayout(); 
 			moveItems(); 
 			setTimeout(jsPlumbDemo.init, 0200); 
-			if(instructorView) {reportingFunction('Hello');}
+			jQuery(function() {
+		  	    jQuery( "#chartDiv" ).dialog({
+		  	      autoOpen: false, modal: true, height:650, width:650,
+		  	      buttons: {Ok: function() {jQuery( this ).dialog( "close" );}}
+		   		 });
+		    });
+			if(instructorView) {
+				jQuery('.questItem').click(
+		    		function() {
+						for (var i = 0; i < data.length; i++) {
+							if (data[i].externalContentId === this.id) {
+								console.log(data[i]);
+								reportingFunction(data[i]);
+								jQuery('#chartDiv').dialog("open");
+							}
+						}
+		    		});
+			}
+			//if(instructorView) {reportingFunction('Hello');}
 		});
 	}
 }
