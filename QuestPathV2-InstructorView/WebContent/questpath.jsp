@@ -79,6 +79,13 @@ var questTier = <%=proc.questTier%>;
 var questsLoaded = true;
 var questDraggable = false;
 var instructorView = <%=proc.isUserAnInstructor%>;
+<%
+String statString = "";
+if (proc.isUserAnInstructor) {
+	statString = proc.qpUtil.statsToJson(proc.courseStats);
+}
+%>
+var questStats = <%=statString %>;
 </script>
 <script type="text/javascript">
 <jsp:include page="js/jquery.min.js" />
@@ -97,15 +104,9 @@ var instructorView = <%=proc.isUserAnInstructor%>;
 </div>
 </div>
 <div id='chartDiv' title="Quest Item" class='chartDiv'>
-	<div id="container" style="height: 300px; width: 300px"></div>
+	<div id="container" style="height: 400px; width: 600px"></div>
 	<div id="reporting"></div>
 </div>
-<%
-String statString = "";
-if (proc.isUserAnInstructor) {
-	statString = proc.qpUtil.statsToJson(proc.courseStats);
-}
-%>
 <!--%=//statString %-->
 <%=proc.debugString %>
 </body>

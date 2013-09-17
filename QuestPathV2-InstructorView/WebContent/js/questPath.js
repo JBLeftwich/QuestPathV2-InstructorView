@@ -83,10 +83,10 @@ function waitForDependencies() {
 			if(instructorView) {
 				jQuery('.questItem').click(
 		    		function() {
-						for (var i = 0; i < data.length; i++) {
-							if (data[i].externalContentId === this.id) {
-								console.log(data[i]);
-								reportingFunction(data[i]);
+						for (var i = 0; i < questStats.length; i++) {
+							if (questStats[i].externalContentId === this.id) {
+								//console.log(questStats);
+								reportingFunction(questStats[i]);
 								jQuery('#chartDiv').dialog("open");
 							}
 						}
