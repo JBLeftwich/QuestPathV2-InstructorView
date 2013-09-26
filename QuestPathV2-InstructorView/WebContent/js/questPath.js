@@ -81,6 +81,7 @@ function waitForDependencies() {
 		   		 });
 		    });
 			if(instructorView) {
+				setInstructorCSSClass(questStats);
 				jQuery('.questItem').click(
 		    		function() {
 						for (var i = 0; i < questStats.length; i++) {
@@ -157,4 +158,14 @@ function initLayout() {
 	}
 }
 
+totalStudents = 0;
+
+function setInstructorCSSClass(questStats) {
+	for (var i = 0; i < questStats.length; i++) {
+		var hybridPassed = questStats[i].passedCount;
+		totalStudents = questStats[i].passedCount + questStats[i].attemptedCount + questStats[i].lockedCount;
+		var percentPassed = Math.round(hybridPassed/totalStudents / .1) * 10;
+		jQuery('#' + questStats[i].externalContentId).addClass('p' + percentPassed);
+	}
+}
 //jsPlumb.bind("ready", function() {moveItems(); jsPlumbDemo.init();});

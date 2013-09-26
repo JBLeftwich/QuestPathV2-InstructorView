@@ -2,9 +2,9 @@ var questStats = [{"attemptedCount":1,"passedStudents":["Leftwich, Stephanie","L
 var jQueryreporting;
 
 var reportingFunction = function (dataSeries) {
-	console.log("what was sent " + dataSeries);
+	//console.log("what was sent " + dataSeries);
 	jQueryReporting = jQuery('#reporting'); 
-	jQueryReporting.hide(); 
+	jQueryReporting.html("Total Students: " + totalStudents); 
 	chart = new Highcharts.Chart({
 		chart: {
 			renderTo: 'container',
@@ -13,7 +13,8 @@ var reportingFunction = function (dataSeries) {
 			plotShadow: true,
 			backgroundColor: '#FFFFCC'
 		},
-		title: {text: 'Current Progress'},
+		credits: {enabled : false},
+		title: {text: 'Current Progress for ' + (jQuery('#' + dataSeries.externalContentId).html())},
 		tooltip: {animation: false,enabled: false},
 		exporting: {enabled : false},
 		plotOptions: {
@@ -32,7 +33,8 @@ var reportingFunction = function (dataSeries) {
 		},
 		series: [{
 			type: 'pie',
-			data: [{
+			data: [
+			{
 				name: 'Attempted',
 				y: dataSeries.attemptedCount,
 				list: dataSeries.attemptedStudents,
@@ -47,13 +49,21 @@ var reportingFunction = function (dataSeries) {
 				y: dataSeries.lockedCount,
 				list: dataSeries.lockedStudents,
 				color: '#FF0000'
-			}],
+			}
+			],
 			point: {
 				events: {
-					click: function() {
+					unselect: function() {
+						//jQueryReporting.html("");
+						//console.log("Unselect");
+						//console.log(event);
+					},
+					select: function() {
+						//console.log("Select");
+						//console.log(event);
 						jQueryReporting.hide();
-						_line = '<ul>'; 
-						_names = "";
+						_line = 'Total Students: ' + totalStudents + '    ' + this.name + ' Students: ' + this.y + '<ul>'; 
+						//_names = "";
 						jQuery(this.list).each(
 								function() {
 									_line += '<li>' + this + '</li>';
@@ -77,13 +87,14 @@ jQuery(document).ready(function() {
     jQuery(function() {
   	    jQuery( "#chartDiv" ).dialog({
   	      autoOpen: false, modal: true, height:650, width:650,
-  	      buttons: {Ok: function() {jQuery( this ).dialog( "close" );}}
+  	      buttons: {Close: function() {jQuery( this ).dialog( "close" );}}
    		 });
     });
+    setInstructorCSSClass(questStats);
     jQuery('.questItem').click(
 	  function() {
 			for (var i = 0; i < questStats.length; i++) {
-				if (data[i].externalContentId === this.id) {
+				if (questStats[i].externalContentId === this.id) {
 					//console.log(questStats[i]);
 					reportingFunction(questStats[i]);
 					jQuery('#chartDiv').dialog("open");
@@ -92,3 +103,14 @@ jQuery(document).ready(function() {
 	  }
 	);
 });
+
+function setInstructorCSSClass(questStats) {
+	for (var i = 0; i < questStats.length; i++) {
+		var hybridPassed = questStats[i].passedCount;
+		var totalStudents = questStats[i].passedCount + questStats[i].attemptedCount + questStats[i].lockedCount;
+		var percentPassed = Math.round(hybridPassed/totalStudents / .1) * 10;
+		jQuery('#' + questStats[i].externalContentId).addClass('p' + percentPassed);
+	}
+}
+
+totalStudents = 3;

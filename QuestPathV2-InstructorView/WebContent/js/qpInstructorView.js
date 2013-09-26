@@ -2,8 +2,8 @@ var jQueryreporting;
 
 var reportingFunction = function (dataSeries) {
 	console.log("what was sent " + dataSeries);
-	jQueryReporting = jQuery('#reporting'); 
-	jQueryReporting.hide(); 
+	jQueryReporting = jQuery('#reporting');
+	jQueryReporting.html("Total Students: " + totalStudents);
 	chart = new Highcharts.Chart({
 		chart: {
 			renderTo: 'container',
@@ -12,9 +12,10 @@ var reportingFunction = function (dataSeries) {
 			plotShadow: true,
 			backgroundColor: '#FFFFCC'
 		},
-		title: {text: 'Current Progress'},
+		title: {text: 'Current Progress for ' + (jQuery('#' + dataSeries.externalContentId).html())},
 		tooltip: {animation: false,enabled: false},
 		exporting: {enabled : false},
+		credits: {enabled : false},
 		plotOptions: {
 			pie: {
 				allowPointSelect: true,
@@ -49,10 +50,10 @@ var reportingFunction = function (dataSeries) {
 			}],
 			point: {
 				events: {
-					click: function() {
+					select: function() {
 						jQueryReporting.hide();
-						_line = '<ul>'; 
-						_names = "";
+						_line = 'Total Students: ' + totalStudents + '  ' + this.name + ': ' + this.y + '<ul>';
+						//_names = "";
 						jQuery(this.list).each(
 								function() {
 									_line += '<li>' + this + '</li>';
@@ -61,6 +62,9 @@ var reportingFunction = function (dataSeries) {
 						_line += '</ul>';
 						jQueryReporting.html(_line);
 						jQueryReporting.show();
+					},
+					unselect: function() {
+						//jQueryReporting.html("");
 					}
 				}
 			}

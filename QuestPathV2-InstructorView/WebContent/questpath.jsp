@@ -33,8 +33,8 @@
 <bbNG:includedPage ctxId="ctx">
 	<!-- to allow access to the session variables -->
 	<%
-			String cssPath1 = PlugInUtil.getUri("dt", "questpathblock",	"css/questPath.css");
-			String htcPath1 = PlugInUtil.getUri("dt", "questpathblock",	"htc/PIE.htc");
+			String cssPath1 = PlugInUtil.getUri("dt", "questpathblock12",	"css/questPath.css");
+			String htcPath1 = PlugInUtil.getUri("dt", "questpathblock12",	"htc/PIE.htc");
 			Processor proc = new Processor();
 			proc.QPDriver(ctx);
 	%>
@@ -97,11 +97,27 @@ var questStats = <%=statString %>;
 <jsp:include page="js/qpInstructorView.js" />
 </script>
 </bbNG:jsBlock>
+<% if (proc.isUserAnInstructor) {%>
+<div class="legend"><h5>LEGEND - Task Completeness</h5>
+<div class="legendColor p100">100%</div>
+<div class="legendColor p90">90%</div>
+<div class="legendColor p80">80%</div>
+<div class="legendColor p70">70%</div>
+<div class="legendColor p60">60%</div>
+<div class="legendColor p50">50%</div>
+<div class="legendColor p40">40%</div>
+<div class="legendColor p30">30%</div>
+<div class="legendColor p20">20%</div>
+<div class="legendColor p10">10%</div>
+<div class="legendColor p0">0%</div>
+</div>
+<%} else { %>
 <div class="legend"><h5>LEGEND</h5>
 <div class="legendColor passed">Passed</div>
 <div class="legendColor unlockedLegend">Unlocked</div>
 <div class="legendColor locked">Locked</div>
 </div>
+<%} %>
 </div>
 <div id='chartDiv' title="Quest Item" class='chartDiv'>
 	<div id="container" style="height: 400px; width: 600px"></div>
