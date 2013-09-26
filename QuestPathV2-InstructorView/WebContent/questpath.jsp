@@ -80,7 +80,7 @@ var questsLoaded = true;
 var questDraggable = false;
 var instructorView = <%=proc.isUserAnInstructor%>;
 <%
-String statString = "";
+String statString = "jQuery.noop";
 if (proc.isUserAnInstructor) {
 	statString = proc.qpUtil.statsToJson(proc.courseStats);
 }
