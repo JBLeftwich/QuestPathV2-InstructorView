@@ -13,7 +13,7 @@
 }
 
 .questItem { 
-	border:0.1em dotted #d4e06b; 
+	border:0.2em solid black; 
 	opacity:0.8; 
 	filter:alpha(opacity=80); 
   	width:10%; 
@@ -77,7 +77,7 @@
 }
 
 .legendColor { 
-	border:0.1em dotted #d4e06b; 
+	border:0.1em dotted #black; 
 	opacity:0.8; 
 	filter:alpha(opacity=80); 
 /*  	width:1em; height:1em;   */
@@ -95,14 +95,26 @@
 }
 
 
-.p100 {background-color:#055c00;color: white; font-weight: bolder;}
-.p90  {background-color:#47bc40;color: white; font-weight: bolder;}
-.p80  {background-color:#78a2bc;color: white; font-weight: bolder;}
-.p70  {background-color:#3831da;color: white; font-weight: bolder;}
-.p60  {background-color:#dad823;color: white; font-weight: bolder;}
-.p50  {background-color:#ffd300;color: white; font-weight: bolder;}
-.p40  {background-color:#d06dcd;color: white; font-weight: bolder;}
-.p30  {background-color:#ff7a00;color: white; font-weight: bolder;}
-.p20  {background-color:#bb5a00;color: white; font-weight: bolder;}
-.p10  {background-color:#bb3030;color: white; font-weight: bolder;}
-.p0   {background-color:#6e0000;color: white; font-weight: bolder;}
+/* .p100 {color: black; font-weight: bolder; background: rgb(51, 102, 255); background: rgba(51, 102, 255, 1);} */
+/* .p90  {color: black; font-weight: bolder; background: rgb(51, 102, 255); background: rgba(51, 102, 255, .9);} */
+/* .p80  {color: black; font-weight: bolder; background: rgb(51, 102, 255); background: rgba(51, 102, 255, .9);} */
+/* .p70  {color: black; font-weight: bolder; background: rgb(51, 102, 255); background: rgba(51, 102, 255, .8);} */
+/* .p60  {color: black; font-weight: bolder; background: rgb(51, 102, 255); background: rgba(51, 102, 255, .7);} */
+/* .p50  {color: black; font-weight: bolder; background: rgb(51, 102, 255); background: rgba(51, 102, 255, .6);} */
+/* .p40  {color: black; font-weight: bolder; background: rgb(51, 102, 255); background: rgba(51, 102, 255, .5);} */
+/* .p30  {color: black; font-weight: bolder; background: rgb(51, 102, 255); background: rgba(51, 102, 255, .4);} */
+/* .p20  {color: black; font-weight: bolder; background: rgb(51, 102, 255); background: rgba(51, 102, 255, .3);} */
+/* .p10  {color: black; font-weight: bolder; background: rgb(51, 102, 255); background: rgba(51, 102, 255, .2);} */
+/* .p0   {color: black; font-weight: bolder; background: rgb(51, 102, 255); background: rgba(51, 102, 255, .2);} */
+
+.p100 {color: black; font-weight: bolder; background: rgb(0, 153, 0); background: rgba(0, 153, 0, 1);}
+.p90  {color: black; font-weight: bolder; background: rgb(0, 153, 0); background: rgba(0, 153, 0, .9);}
+.p80  {color: black; font-weight: bolder; background: rgb(0, 153, 0); background: rgba(0, 153, 0, .8);}
+.p70  {color: black; font-weight: bolder; background: rgb(0, 153, 0); background: rgba(0, 153, 0, .7);}
+.p60  {color: black; font-weight: bolder; background: rgb(0, 153, 0); background: rgba(0, 153, 0, .6);}
+.p50  {color: black; font-weight: bolder; background: rgb(0, 153, 0); background: rgba(0, 153, 0, .5);}
+.p40  {color: black; font-weight: bolder; background: rgb(0, 153, 0); background: rgba(0, 153, 0, .4);}
+.p30  {color: black; font-weight: bolder; background: rgb(0, 153, 0); background: rgba(0, 153, 0, .3);}
+.p20  {color: black; font-weight: bolder; background: rgb(0, 153, 0); background: rgba(0, 153, 0, .2);}
+.p10  {color: black; font-weight: bolder; background: rgb(0, 153, 0); background: rgba(0, 153, 0, .1);}
+.p0   {color: black; font-weight: bolder; background: rgb(0, 153, 0); background: rgba(0, 153, 0, .1);}
