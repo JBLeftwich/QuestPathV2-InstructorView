@@ -65,11 +65,11 @@ function moveItems() {
 /*
  * Pause for other script files to be loaded
  */
-function waitForDependencies() {    
-	if (typeof jQueryLoaded === 'undefined' || typeof questsLoaded === 'undefined' || typeof jsPlumbLoaded === 'undefined'
-		|| typeof uiMinLoaded === 'undefined' || typeof uiTouchLoaded === 'undefined') {        
-		setTimeout(waitForDependencies, 0200);}    
-	else {
+function waitForDependencies() {
+	//if (typeof jQueryLoaded === 'undefined' || typeof questsLoaded === 'undefined' || typeof jsPlumbLoaded === 'undefined'
+	//	|| typeof uiMinLoaded === 'undefined' || typeof uiTouchLoaded === 'undefined') {        
+	//	setTimeout(waitForDependencies, 0200);}    
+	//else {
 		jsPlumb.bind("ready", function() {
 			initLayout(); 
 			moveItems(); 
@@ -95,10 +95,10 @@ function waitForDependencies() {
 			}
 			//if(instructorView) {reportingFunction('Hello');}
 		});
-	}
+	//}
 }
 
-waitForDependencies();
+//waitForDependencies();
 
 function openAssignment(link) {
 	urlLoc = window.location;

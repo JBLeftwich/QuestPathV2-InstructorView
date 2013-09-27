@@ -81,19 +81,31 @@ var questsLoaded = true;
 var questDraggable = true;
 </script>
 <script src="js/jquery.min.js"></script>
+<script>
+//jQuery('#questpathBlockContainer').hide();
+jQuery.getScript("js/jquery-ui.min.2.js", 
+		function() {jQuery.getScript("js/jquery.ui.touch-punch.min.js", function() {
+			jQuery.getScript("js/json2.js" , function() {
+				jQuery.getScript("js/jquery.jsPlumb-1.3.16-all-min.js", function() {
+					jQuery.getScript("js/highcharts.js",function() {
+						jQuery.getScript("js/questPath.js", function(){
+							jQuery.getScript("js/instructorView.js", function(){waitForDependencies();});						
+						});});});});});});
+
+</script>
 <!-- <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script> -->
-<script src="js/jquery-ui.min.2.js"></script>
-<script src="js/jquery.ui.touch-punch.min.js"></script> 
-<script src="js/json2.js"></script>
-<script src="js/jquery.jsPlumb-1.3.16-all-min.js"></script>
-<script src="js/highcharts.js"></script>
+<!-- <script src="js/jquery-ui.min.2.js"></script> -->
+<!-- <script src="js/jquery.ui.touch-punch.min.js"></script>  -->
+<!-- <script src="js/json2.js"></script> -->
+<!-- <script src="js/jquery.jsPlumb-1.3.16-all-min.js"></script> -->
+<!-- <script src="js/highcharts.js"></script> -->
 <div id='chartDiv' title="Progress" class='chartDiv'>
 <div id="container" style="height: 400px; width: 600px"></div>
 <div id="reporting">
 Total Students 3
 </div>
 </div>
-<script src="js/questPath.js"></script>
-<script src="js/instructorView.js"></script>
+<!-- <script src="js/questPath.js"></script> -->
+<!-- <script src="js/instructorView.js"></script> -->
 </body>
 </html>

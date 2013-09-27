@@ -1,7 +1,6 @@
 var jQueryreporting;
 
 var reportingFunction = function (dataSeries) {
-	console.log("what was sent " + dataSeries);
 	jQueryReporting = jQuery('#reporting');
 	jQueryReporting.html("Total Students: " + totalStudents);
 	chart = new Highcharts.Chart({

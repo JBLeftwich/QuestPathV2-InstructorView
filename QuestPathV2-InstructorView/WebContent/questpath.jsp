@@ -89,12 +89,32 @@ var questStats = <%=statString %>;
 </script>
 <script type="text/javascript">
 <jsp:include page="js/jquery.min.js" />
-<jsp:include page="ScriptFile.jsp" />
-<jsp:include page="js/jquery.jsPlumb-1.3.16-all-min.js" />
-<jsp:include page="js/jquery.ui.touch-punch.min.js" />
-<jsp:include page="js/highcharts.js" />
-<jsp:include page="js/questPath.js" />
-<jsp:include page="js/qpInstructorView.js" />
+<%// <jsp:include page="ScriptFile.jsp" />
+// <jsp:include page="js/jquery.jsPlumb-1.3.16-all-min.js" />
+// <jsp:include page="js/jquery.ui.touch-punch.min.js" />
+// <jsp:include page="js/highcharts.js" />
+// <jsp:include page="js/questPath.js" />
+// <jsp:include page="js/qpInstructorView.js" />%>
+//jQuery('#questpathBlockContainer').hide();
+<%
+String jqUIPath = PlugInUtil.getUri("dt", "questpathblock12",	"js/jquery-ui.min.2.js");
+String jtPath   = PlugInUtil.getUri("dt", "questpathblock12",	"js/jquery.ui.touch-punch.min.js");
+String jsPath   = PlugInUtil.getUri("dt", "questpathblock12",	"js/json2.js");
+String jpPath   = PlugInUtil.getUri("dt", "questpathblock12",	"js/jquery.jsPlumb-1.3.16-all-min.js");
+String hcPath   = PlugInUtil.getUri("dt", "questpathblock12",	"js/highcharts.js");
+String qpPath   = PlugInUtil.getUri("dt", "questpathblock12",	"js/questPath.js");
+String qiPath   = PlugInUtil.getUri("dt", "questpathblock12",	"js/qpInstructorView.js");
+%>
+jQuery.getScript('<%=jqUIPath%>', 
+	function() {
+		jQuery.getScript('<%=jtPath%>', function() { 
+			jQuery.getScript('<%=jsPath%>' , function() { 
+				jQuery.getScript('<%=jpPath%>', function() { 
+					jQuery.getScript('<%=hcPath%>',function() { 
+						jQuery.getScript('<%=qpPath%>', function(){ 
+							jQuery.getScript('<%=qiPath%>', function(){
+								waitForDependencies();});						
+	});});});});});});
 </script>
 </bbNG:jsBlock>
 <% if (proc.isUserAnInstructor) {%>
