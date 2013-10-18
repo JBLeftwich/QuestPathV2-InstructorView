@@ -39,6 +39,7 @@
 .passed {
 	background-color:#B6D7A8;
 }
+
 .failed {
 	background-color:#FFE599;
 	font-weight: bolder;

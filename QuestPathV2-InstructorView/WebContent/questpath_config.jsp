@@ -30,10 +30,11 @@
 		Processor proc = new Processor();
 		proc.QPDriver(ctx);
 		if (proc.isUserAnInstructor) {
-		String cssPath1 = PlugInUtil.getUri("dt", "questpathblock",	"css/questPath.css");
-		String htcPath1 = PlugInUtil.getUri("dt", "questpathblock",	"htc/PIE.htc");
+		String cssPath1 = PlugInUtil.getUri("dt", "questpathblock12",	"css/questPath.css");
+		String htcPath1 = PlugInUtil.getUri("dt", "questpathblock12",	"htc/PIE.htc");
 %>
 <bbNG:cssFile href="<%=cssPath1%>" />
+<bbNG:cssFile href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
 <bbNG:cssBlock>
 <style>
 .questItem {
@@ -73,14 +74,36 @@
 	var questTier = <%=proc.questTier%>;
 	var questsLoaded = true;
 	var questDraggable = true;
+	var instructorView = false;//prevent quest stats when configuring block
 </script>
 <script type="text/javascript">
 <jsp:include page="js/jquery.min.js" />
-<jsp:include page="ScriptFile.jsp" />
-<jsp:include page="js/jquery.jsPlumb-1.3.16-all-min.js" />
-<jsp:include page="js/jquery.ui.touch-punch.min.js" />
-<jsp:include page="js/json2.js" />
-<jsp:include page="js/questPath.js" />
+<%// <jsp:include page="ScriptFile.jsp" />
+// <jsp:include page="js/jquery.jsPlumb-1.3.16-all-min.js" />
+// <jsp:include page="js/jquery.ui.touch-punch.min.js" />
+// <jsp:include page="js/highcharts.js" />
+// <jsp:include page="js/questPath.js" />
+// <jsp:include page="js/qpInstructorView.js" />%>
+//jQuery('#questpathBlockContainer').hide();
+<%
+String jqUIPath = PlugInUtil.getUri("dt", "questpathblock12",	"js/jquery-ui.min.2.js");
+String jtPath   = PlugInUtil.getUri("dt", "questpathblock12",	"js/jquery.ui.touch-punch.min.js");
+String jsPath   = PlugInUtil.getUri("dt", "questpathblock12",	"js/json2.js");
+String jpPath   = PlugInUtil.getUri("dt", "questpathblock12",	"js/jquery.jsPlumb-1.3.16-all-min.js");
+String hcPath   = PlugInUtil.getUri("dt", "questpathblock12",	"js/highcharts.js");
+String qpPath   = PlugInUtil.getUri("dt", "questpathblock12",	"js/questPath.js");
+String qiPath   = PlugInUtil.getUri("dt", "questpathblock12",	"js/qpInstructorView.js");
+%>
+jQuery.getScript('<%=jqUIPath%>', 
+	function() {
+		jQuery.getScript('<%=jtPath%>', function() { 
+			jQuery.getScript('<%=jsPath%>' , function() { 
+				jQuery.getScript('<%=jpPath%>', function() { 
+					jQuery.getScript('<%=hcPath%>',function() { 
+						jQuery.getScript('<%=qpPath%>', function(){ 
+							jQuery.getScript('<%=qiPath%>', function(){
+								waitForDependencies();});						
+	});});});});});});
 </script>
 </bbNG:jsBlock>
 <div class="legend">

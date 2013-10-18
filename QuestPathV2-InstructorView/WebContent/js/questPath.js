@@ -80,6 +80,9 @@ function waitForDependencies() {
 		  	      buttons: {Ok: function() {jQuery( this ).dialog( "close" );}}
 		   		 });
 		    });
+			jQuery(function() {
+			 jQuery( "#questpathBlockContainer").tooltip();
+			});
 			if(instructorView) {
 				setInstructorCSSClass(questStats);
 				jQuery('.questItem').click(
@@ -168,4 +171,3 @@ function setInstructorCSSClass(questStats) {
 		jQuery('#' + questStats[i].externalContentId).addClass('p' + percentPassed);
 	}
 }
-//jsPlumb.bind("ready", function() {moveItems(); jsPlumbDemo.init();});
