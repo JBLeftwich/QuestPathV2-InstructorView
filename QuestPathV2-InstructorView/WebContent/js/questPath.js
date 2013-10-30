@@ -8,7 +8,6 @@
 (function() {
 	window.jsPlumbDemo = {
 			init : function() {			
-				//jsPlumb.setRenderMode(jsPlumb.VML);
 				var color = "black";
 				jsPlumb.importDefaults({
 					Connector : [ "Bezier", { curviness:40 } ],
@@ -19,7 +18,7 @@
 					EndpointHoverStyle : {fillStyle:"#ec9f2e" },			
 					Anchors :  [ "AutoDefault", "AutoDefault" ]
 				});
-				var arrowCommon = { foldback:1.0, fillStyle:color, width:14 },
+				var arrowCommon = { foldback:1.0, fillStyle:color, width:14 };
 				overlays = [[ "Arrow", { location:0.5 }, arrowCommon ]];
 				var procQuests = new Array();
 				for (var i = 0; i < quests.length; i++) {
@@ -98,6 +97,7 @@ function waitForDependencies() {
 			}
 			//if(instructorView) {reportingFunction('Hello');}
 		});
+		jQuery(function() {jQuery( ".nonQuestItem" ).draggable();});
 	//}
 }
 
@@ -169,5 +169,70 @@ function setInstructorCSSClass(questStats) {
 		totalStudents = questStats[i].passedCount + questStats[i].attemptedCount + questStats[i].lockedCount;
 		var percentPassed = Math.round(hybridPassed/totalStudents / .1) * 10;
 		jQuery('#' + questStats[i].externalContentId).addClass('p' + percentPassed);
+	}
+}
+
+function buildDialog() {
+	jQuery( "#ruleDialog" ).dialog({
+	      autoOpen: false,
+	      height: 300,
+	      width: 500,
+	      modal: true, 
+	      buttons: {
+	    	  Ok: function() {
+	    		  var errorFree = true;
+	    		  var fromId = jQuery('#fromItem').val();
+	    		  var toId = jQuery('#toItem').val();
+	    		  var typeRule = jQuery( "input:radio[name=ruleRadio]:checked" ).val();
+	    		  var minValue = jQuery('#minValue').val();
+	    		  if (fromId.length === 0) {
+	    			  alert("From Quest Item Required");
+	    			  errorFree = false;
+	    		  }
+	    		  if (toId.length === 0) {
+	    			  alert("To Quest Item Required");
+	    			  errorFree = false;
+	    		  }
+	    		  if (typeRule.length == 0) {
+	    			  alert("Adaptive Release Type Rule");
+	    			  errorFree = false;
+	    		  }
+	    		  if (isNaN(minValue) || minValue.length === 0 || minValue === 0) {
+	    			  alert("Minimum Score Must Be Numeric and Greater Than 0");
+	    			  errorFree = false;
+	    		  }
+	    		  console.log(fromId + " - " + jQuery("#" + fromId).parent().attr('id'));
+	    		  console.log(toId + " - " + jQuery("#" + toId).parent().attr('id'));
+//	    		  if (jQuery("#" + fromId).parent().attr('id') != 'questpathBlockContainer' ||
+//	    				  jQuery("#" + toId).parent().attr('id') != 'questpathBlockContainer') {
+//	    			  alert("Items Without an Adaptive Release Must Be Moved Above the Dotted Line");
+//	    			  errorFree = false;
+//	    		  }  
+	    		  if (errorFree) {
+	    			  buildNewConnection(fromId, toId);
+	    			  jQuery( this ).dialog( "close" );
+	    		  };
+	           }
+	      }
+	});
+	jQuery('#ruleButton').on('click', function() {jQuery('#ruleDialog').dialog("open");});
+}
+
+function buildNewConnection(fromId, toId) {
+	var color = "black";
+	jsPlumb.importDefaults({
+		Connector : [ "Bezier", { curviness:40 } ],
+		DragOptions : { cursor: "pointer", zIndex:2000 },
+		PaintStyle : { strokeStyle:color, lineWidth:3 },
+		EndpointStyle : { radius:3, fillStyle:color },
+		HoverPaintStyle : {strokeStyle:"black" },
+		EndpointHoverStyle : {fillStyle:"#ec9f2e" },			
+		Anchors :  [ "AutoDefault", "AutoDefault" ]
+	});
+	var arrowCommon = { foldback:1.0, fillStyle:color, width:14 };
+	var overlays = [[ "Arrow", { location:0.5 }, arrowCommon ]];
+	jsPlumb.connect({source:fromId, target:toId, overlays:overlays});
+	if (questDraggable) {
+		jsPlumb.draggable(jsPlumb.getSelector(".questItem"),{containment:"parent"});
 	}
 }

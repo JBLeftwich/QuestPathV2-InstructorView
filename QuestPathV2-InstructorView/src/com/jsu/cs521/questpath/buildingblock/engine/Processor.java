@@ -44,6 +44,7 @@ public class Processor {
 	public String debugString = "";
 	public List<CourseMembership> courseMembers = new ArrayList<CourseMembership>();
 	public List<QuestStats> courseStats = new ArrayList<QuestStats>();
+	public List<QuestPathItem> nonQuestItems = new ArrayList<QuestPathItem>();
 /**
  * This method builds a QuestPath for each initial Quest Path Item
  * It then loops through the remaining Quest Path Items to apply them
@@ -207,6 +208,7 @@ public class Processor {
 			List<QuestRule> questRules = qpUtil.buildQuestRules(rules, avCriLoader, defLoad);
 			itemList = qpUtil.setParentChildList(itemList, questRules);
 			itemList = qpUtil.setInitialFinal(itemList);
+			nonQuestItems = qpUtil.findNonAdaptiveReleaseContent(itemList);
 			itemList = qpUtil.removeNonAdaptiveReleaseContent(itemList);
 			itemList = qpUtil.setGradableQuestPathItemStatus(itemList,questRules);
 			itemList = qpUtil.setLockOrUnlocked(itemList, questRules);

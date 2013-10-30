@@ -39,6 +39,17 @@ public class QuestPathUtil {
 	 * @param allItems
 	 * @return
 	 */
+	public List<QuestPathItem> findNonAdaptiveReleaseContent(List<QuestPathItem> allItems) {
+		List<QuestPathItem> finalList = new ArrayList<QuestPathItem>();
+		for (QuestPathItem qPI : allItems) {
+			if (qPI.getChildContent().size() == 0 && qPI.getParentContent().size() == 0) 
+			{
+				finalList.add(qPI);
+			}
+		}
+		return finalList;
+	}
+	
 	public List<QuestPathItem> removeNonAdaptiveReleaseContent(List<QuestPathItem> allItems) {
 		List<QuestPathItem> finalList = new ArrayList<QuestPathItem>();
 		for (QuestPathItem qPI : allItems) {
