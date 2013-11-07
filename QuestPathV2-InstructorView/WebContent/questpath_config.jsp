@@ -32,6 +32,7 @@
 		if (proc.isUserAnInstructor) {
 		String cssPath1 = PlugInUtil.getUri("dt", "questpathblock12",	"css/questPath.css");
 		StringBuilder ruleOptions = new StringBuilder("");
+		StringBuilder rewardRuleOptions = new StringBuilder("");
 		//String htcPath1 = PlugInUtil.getUri("dt", "questpathblock12",	"htc/PIE.htc");
 %>
 <bbNG:cssFile href="<%=cssPath1%>" />
@@ -49,16 +50,26 @@
 				if (!procQI.contains(qpI.getExtContentId())) {
 				QPAttributes qpAtt = new QPAttributes(qpI);
 				if (qpI.isGradable()) {ruleOptions.append("<option value='" + qpI.getExtContentId() + "'>" + qpI.getName() + "</option>");}
+				if (!qpI.isGradable()) {rewardRuleOptions.append("<option value='" + qpI.getExtContentId() + "'>" + qpI.getName() + "</option>");}
 	%>
 			<div id="<%=qpI.getExtContentId() %>"
-				class="questItem <%=qpAtt.getStatusClassName()%>"
+				class="questItem locked"
 				title="<%=qpAtt.getTitle()%>" <%if (!qpI.isLocked()) {%>
 			<%}%>><%=qpI.getName()%></div>
 		<%procQI.add(qpI.getExtContentId());}
 			}
 			j++;
 		}
+		for (QuestPathItem qpI : proc.nonQuestItems) {
+				if (!procQI.contains(qpI.getExtContentId())) {
+					if (qpI.isGradable()) {ruleOptions.append("<option value='" + qpI.getExtContentId() + "'>" + qpI.getName() + "</option>");}
+					if (!qpI.isGradable()) {rewardRuleOptions.append("<option value='" + qpI.getExtContentId() + "'>" + qpI.getName() + "</option>");}
 	%>
+			<div id="<%=qpI.getExtContentId() %>"
+				class="questItem nonQuestItem locked" title=""><%}%><%=qpI.getName()%>
+			</div>
+	<%procQI.add(qpI.getExtContentId());}%>
+	
 <bbNG:jsBlock>
 <script type="text/javascript">
 	<%String questString = proc.qpUtil.qpathsToJson(proc.qPaths);%>
@@ -92,37 +103,19 @@ jQuery.getScript('<%=jqUIPath%>',
 	});});});});});});});
 </script>
 </bbNG:jsBlock>
-<div class="legend">
-	<h5>LEGEND</h5>
-	<div class="legendColor passed">Passed</div>
-	<div class="legendColor unlockedLegend">Unlocked</div>
-	<div class="legendColor locked">Locked</div>
-</div>
 <div class="saveButton">
 </div>
 </div>
-<div id='nonQuestItemContainer' class='nonQuestItemContainer'>
 <button type="button" id='ruleButton'>Create a new Adaptive Release</button>
-Items Without Adaptive Release Rules<br />
-	<%
-		for (QuestPathItem qpI : proc.nonQuestItems) {
-				if (!procQI.contains(qpI.getExtContentId())) {
-					if (qpI.isGradable()) {ruleOptions.append("<option value='" + qpI.getExtContentId() + "'>" + qpI.getName() + "</option>");}
-	%>
-			<div id="<%=qpI.getExtContentId() %>"
-				class="nonQuestItem locked" title=""><%}%><%=qpI.getName()%>
-			</div>
-	<%procQI.add(qpI.getExtContentId());}%>
 <div id='ruleDialog' title='Add a New Adaptive Release'>
 From <select id='fromItem'><%=ruleOptions.toString()%></select><br />
-To <select id='toItem'><%=ruleOptions.toString()%></select>
+To <select id='toItem'><%=ruleOptions.toString()%><%=rewardRuleOptions.toString() %></select>
 <div id="ruleRadio">
     <input type="radio" id="radio1" name="ruleRadio" value='1' checked="checked" /><label for="radio1">Score Based</label>
     <input type="radio" id="radio2" name="ruleRadio" value= '2' /><label for="radio2">Percent Based</label>
 </div>
 Minimum Score or Percent: <input type='text' id='minValue' size='5'/>
 </div> 
-</div>
 	<bbNG:dataCollection>
 		<bbNG:step title="QuestPath Configuration 1.1" >
 			<input type="hidden" id="questLayout" name="questLayout" value='<%=proc.qLayout%>' />

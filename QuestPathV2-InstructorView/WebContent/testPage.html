@@ -55,6 +55,12 @@
 	<div id="_49_1" class="questItem locked p0" title="Reward - JavaScript Guru Item will be unlocked when the following Quest Path Items are completed: Assignment 2.2 (With Excessively Long Title)">
 	JavaScript Guru
 	</div>
+	<div id="_50_1" class="questItem nonQuestItem locked p0" title="Test">
+	Test
+	</div>
+	<div id="_51_1" class="questItem nonQuestItem locked p0" title="Test2">
+	Test2
+	</div>
 <div class="legend"><h5>LEGEND - Task Completeness</h5>
 <div class="legendColor p100">100%</div>
 <div class="legendColor p90">90%</div>
@@ -79,6 +85,7 @@ var questLayout = {"height":800,"width":1368,"qItemLayout":[{"extContentId":"_20
 var questTier = [[{"tier":["_20_1"]},{"tier":["_21_1","_50_1"]},{"tier":["_24_1","_104_1"]},{"tier":["_105_1"]}],[{"tier":["_46_1"]},{"tier":["_24_1","_47_1"]},{"tier":["_49_1"]}]];
 var questsLoaded = true;
 var questDraggable = true;
+var instructorView = false;
 </script>
 <script src="js/jquery.min.js"></script>
 <script>
@@ -89,7 +96,7 @@ jQuery.getScript("js/jquery-ui.min.2.js",
 				jQuery.getScript("js/jquery.jsPlumb-1.3.16-all-min.js", function() {
 					jQuery.getScript("js/highcharts.js",function() {
 						jQuery.getScript("js/questPath.js", function(){
-							jQuery.getScript("js/instructorView.js", function(){waitForDependencies();});						
+							jQuery.getScript("js/instructorView.js", function(){waitForDependencies(); jQuery('#_50_1').draggable();});						
 						});});});});});});
 
 </script>

@@ -72,6 +72,7 @@ function waitForDependencies() {
 		jsPlumb.bind("ready", function() {
 			initLayout(); 
 			moveItems(); 
+			positionNonQuestItems();
 			setTimeout(jsPlumbDemo.init, 0200); 
 			jQuery(function() {
 		  	    jQuery( "#chartDiv" ).dialog({
@@ -97,11 +98,9 @@ function waitForDependencies() {
 			}
 			//if(instructorView) {reportingFunction('Hello');}
 		});
-		jQuery(function() {jQuery( ".nonQuestItem" ).draggable();});
+		//jQuery(function() {jQuery( ".nonQuestItem" ).draggable();});
 	//}
 }
-
-//waitForDependencies();
 
 function openAssignment(link) {
 	urlLoc = window.location;
@@ -125,8 +124,6 @@ function setLocation() {
 		for (var j = 0; j < quests[i].questPathItems.length; j++) {
 			var qItem = new Object();
 			qItem.extContentId = quests[i].questPathItems[j].extContentId;
-			//qItem.top = document.getElementById(i + '-' + quests[i].questPathItems[j].name).style.top;
-			//qItem.left = document.getElementById(i + '-' + quests[i].questPathItems[j].name).style.left;
 			qItem.top = document.getElementById(quests[i].questPathItems[j].extContentId).style.top;
 			qItem.left = document.getElementById(quests[i].questPathItems[j].extContentId).style.left;
 			qLayout.qItemLayout[k] = qItem;
@@ -139,7 +136,7 @@ function setLocation() {
 /*
  * Redraw as page is resized
  */
-window.onresize=function(){moveItems(); jsPlumbDemo.init();};
+window.onresize=function(){moveItems(); jsPlumbDemo.init(); positionNonQuestItems();};
 
 /*
  * Build initial layout graph
@@ -193,6 +190,10 @@ function buildDialog() {
 	    			  alert("To Quest Item Required");
 	    			  errorFree = false;
 	    		  }
+	    		  if (toId === fromId) {
+	    			  alert("From and To Must Be Different Items");
+	    			  errorFree = false;
+	    		  }
 	    		  if (typeRule.length == 0) {
 	    			  alert("Adaptive Release Type Rule");
 	    			  errorFree = false;
@@ -201,13 +202,8 @@ function buildDialog() {
 	    			  alert("Minimum Score Must Be Numeric and Greater Than 0");
 	    			  errorFree = false;
 	    		  }
-	    		  console.log(fromId + " - " + jQuery("#" + fromId).parent().attr('id'));
-	    		  console.log(toId + " - " + jQuery("#" + toId).parent().attr('id'));
-//	    		  if (jQuery("#" + fromId).parent().attr('id') != 'questpathBlockContainer' ||
-//	    				  jQuery("#" + toId).parent().attr('id') != 'questpathBlockContainer') {
-//	    			  alert("Items Without an Adaptive Release Must Be Moved Above the Dotted Line");
-//	    			  errorFree = false;
-//	    		  }  
+	    		  //console.log(fromId + " - " + jQuery("#" + fromId).parent().attr('id'));
+	    		  //console.log(toId + " - " + jQuery("#" + toId).parent().attr('id'));
 	    		  if (errorFree) {
 	    			  buildNewConnection(fromId, toId);
 	    			  jQuery( this ).dialog( "close" );
@@ -219,6 +215,8 @@ function buildDialog() {
 }
 
 function buildNewConnection(fromId, toId) {
+	jQuery('#' + fromId).addClass("questItem").removeClass("nonQuestItem");
+	jQuery('#' + toId).addClass("questItem").removeClass("nonQuestItem");
 	var color = "black";
 	jsPlumb.importDefaults({
 		Connector : [ "Bezier", { curviness:40 } ],
@@ -235,4 +233,26 @@ function buildNewConnection(fromId, toId) {
 	if (questDraggable) {
 		jsPlumb.draggable(jsPlumb.getSelector(".questItem"),{containment:"parent"});
 	}
+}
+
+function positionNonQuestItems() {
+	nonQuestList = jQuery('.nonQuestItem');
+	//console.log(nonQuestList.length);
+	init_height = document.getElementById('questpathBlockContainer').offsetHeight;
+	init_width = document.getElementById('questpathBlockContainer').offsetWidth;
+	//console.log(init_height + ":" + init_width);
+	var newTop = init_height - init_height/15;
+	var newLeft = 0;
+	var count = 0;
+	nonQuestList.each(function() {
+		document.getElementById(jQuery( this ).attr('id')).style.top = newTop + "px";
+		document.getElementById(jQuery( this ).attr('id')).style.left = newLeft + "px";
+		count++;
+		newLeft += init_width/10;
+		if (count === 9) {
+			newLeft = 0;
+			newTop = newTop - init_height/15;
+			count = 0;
+		}
+	});
 }
