@@ -217,21 +217,28 @@ function buildDialog() {
 function buildNewConnection(fromId, toId) {
 	jQuery('#' + fromId).addClass("questItem").removeClass("nonQuestItem");
 	jQuery('#' + toId).addClass("questItem").removeClass("nonQuestItem");
-	var color = "black";
+	var color = "red";
 	jsPlumb.importDefaults({
 		Connector : [ "Bezier", { curviness:40 } ],
 		DragOptions : { cursor: "pointer", zIndex:2000 },
 		PaintStyle : { strokeStyle:color, lineWidth:3 },
 		EndpointStyle : { radius:3, fillStyle:color },
-		HoverPaintStyle : {strokeStyle:"black" },
+		HoverPaintStyle : {strokeStyle:"red" },
 		EndpointHoverStyle : {fillStyle:"#ec9f2e" },			
 		Anchors :  [ "AutoDefault", "AutoDefault" ]
 	});
 	var arrowCommon = { foldback:1.0, fillStyle:color, width:14 };
 	var overlays = [[ "Arrow", { location:0.5 }, arrowCommon ]];
-	jsPlumb.connect({source:fromId, target:toId, overlays:overlays});
+	jsPlumb.connect({source:fromId, target:toId, overlays:overlays}).bind("dblclick", function(connection, originalEvent)  {removeNewConnection(connection);});
 	if (questDraggable) {
 		jsPlumb.draggable(jsPlumb.getSelector(".questItem"),{containment:"parent"});
+	}
+}
+
+function removeNewConnection(connection) {
+	var c = confirm("Confirm Deletion!");
+	if (c === true) {
+		jsPlumb.detach(connection);
 	}
 }
 
