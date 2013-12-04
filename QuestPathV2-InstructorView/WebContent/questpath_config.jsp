@@ -60,7 +60,10 @@
 			}
 			j++;
 		}
+		//remove && false after Jan.
+		if (false) {
 		for (QuestPathItem qpI : proc.nonQuestItems) {
+			
 				if (!procQI.contains(qpI.getExtContentId())) {
 					if (qpI.isGradable()) {ruleOptions.append("<option value='" + qpI.getExtContentId() + "'>" + qpI.getName() + "</option>");}
 					if (!qpI.isGradable()) {rewardRuleOptions.append("<option value='" + qpI.getExtContentId() + "'>" + qpI.getName() + "</option>");}
@@ -68,7 +71,7 @@
 			<div id="<%=qpI.getExtContentId() %>"
 				class="questItem nonQuestItem locked" title=""><%}%><%=qpI.getName()%>
 			</div>
-	<%procQI.add(qpI.getExtContentId());}%>
+	<%procQI.add(qpI.getExtContentId());}}%>
 	
 <bbNG:jsBlock>
 <script type="text/javascript">
@@ -106,7 +109,7 @@ jQuery.getScript('<%=jqUIPath%>',
 <div class="saveButton">
 </div>
 </div>
-<button type="button" id='ruleButton'>Create a new Adaptive Release</button>
+<!-- tempComment button type="button" id='ruleButton'>Create a new Adaptive Release</button-->
 <div id='ruleDialog' title='Add a New Adaptive Release'>
 From <select id='fromItem'><%=ruleOptions.toString()%></select><br />
 To <select id='toItem'><%=ruleOptions.toString()%><%=rewardRuleOptions.toString() %></select>
