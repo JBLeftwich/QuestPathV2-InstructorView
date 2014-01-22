@@ -120,6 +120,7 @@ function setLocation() {
 	qLayout.width = document.getElementById('questpathBlockContainer').offsetWidth;
 	qLayout.qItemLayout = new Array();
 	var k = 0;
+	//TODO make sure we add new items here
 	for (var i = 0; i < quests.length; i++) {
 		for (var j = 0; j < quests[i].questPathItems.length; j++) {
 			var qItem = new Object();
@@ -215,8 +216,10 @@ function buildDialog() {
 }
 
 function buildNewConnection(fromId, toId) {
+	//add item if it has nonQuestItem to quests array
 	jQuery('#' + fromId).addClass("questItem").removeClass("nonQuestItem");
 	jQuery('#' + toId).addClass("questItem").removeClass("nonQuestItem");
+	//TODO mark new toID with new class
 	var color = "red";
 	jsPlumb.importDefaults({
 		Connector : [ "Bezier", { curviness:40 } ],
@@ -229,6 +232,7 @@ function buildNewConnection(fromId, toId) {
 	});
 	var arrowCommon = { foldback:1.0, fillStyle:color, width:14 };
 	var overlays = [[ "Arrow", { location:0.5 }, arrowCommon ]];
+	//TODO what gets returned here?
 	jsPlumb.connect({source:fromId, target:toId, overlays:overlays}).bind("dblclick", function(connection, originalEvent)  {removeNewConnection(connection);});
 	if (questDraggable) {
 		jsPlumb.draggable(jsPlumb.getSelector(".questItem"),{containment:"parent"});
@@ -237,6 +241,7 @@ function buildNewConnection(fromId, toId) {
 
 function removeNewConnection(connection) {
 	var c = confirm("Confirm Deletion!");
+	//TODO for debugging console.log(c);
 	if (c === true) {
 		jsPlumb.detach(connection);
 	}
@@ -262,4 +267,15 @@ function positionNonQuestItems() {
 			count = 0;
 		}
 	});
+}
+
+function testGetConnectors() {
+	var targetArray = new Array();
+	var nonQuestList = jQuery('.nonQuestItem');
+	nonQuestList.each(function() {
+		targetArray.push(jQuery(this).attr('id'));
+	});
+	console.log(targetArray);
+	var connectionList = jsPlumb.getConnections({target: targetArray});
+	console.log(connectionList);
 }
