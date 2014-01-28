@@ -40,7 +40,8 @@
 			String errorMsg = "";
 			BbPersistenceManager bbPm = BbServiceManager.getPersistenceService().getDbPersistenceManager();			
 			Id courseId = bbPm.generateId(Course.DATA_TYPE,request.getParameter("course_id"));
-			String testVar = request.getParameter("questLayout");
+			String qLayout = request.getParameter("questLayout");
+			String newRules = request.getParameter("newRules");
 			CourseTocDbLoader cTocLoader = CourseTocDbLoader.Default.getInstance();
 			ContentDbLoader cntDbLoader = ContentDbLoader.Default.getInstance();
 			List<CourseToc> tList = cTocLoader.loadByCourseId(courseId);
@@ -58,7 +59,7 @@
 			for (Content c : children) {
 				if (c.getTitle().equalsIgnoreCase("QuestPath")) {
 					Content courseWork = cntDbLoader.loadById(c.getId());;
-					FormattedText ft = new FormattedText(testVar, FormattedText.Type.PLAIN_TEXT);
+					FormattedText ft = new FormattedText(qLayout, FormattedText.Type.PLAIN_TEXT);
 					courseWork.setBody(ft);
 					ContentDbPersister contentPersister =  ContentDbPersister.Default.getInstance(); 
        			   	contentPersister.persist(courseWork);

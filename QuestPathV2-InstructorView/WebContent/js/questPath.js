@@ -51,9 +51,11 @@ function moveItems() {
 		var widthRatio = currentWidth/initWidth;
 		try {
 			for (var i = 0; i < questLayout.qItemLayout.length; i++) {
-				var x = document.getElementById(questLayout.qItemLayout[i].extContentId);
-				x.style.top = (parseInt(questLayout.qItemLayout[i].top) * 1) + "px";
-				x.style.left = (parseInt(questLayout.qItemLayout[i].left) * widthRatio) + "px";
+				if (document.getElementById(questLayout.qItemLayout[i].extContentId)) {
+					var x = document.getElementById(questLayout.qItemLayout[i].extContentId);
+					x.style.top = (parseInt(questLayout.qItemLayout[i].top) * 1) + "px";
+					x.style.left = (parseInt(questLayout.qItemLayout[i].left) * widthRatio) + "px";
+				}
 			}
 		} catch(exception) {initLayout();}//default to init layout if unable to build layout
 	} else {
@@ -96,10 +98,7 @@ function waitForDependencies() {
 						}
 		    		});
 			}
-			//if(instructorView) {reportingFunction('Hello');}
 		});
-		//jQuery(function() {jQuery( ".nonQuestItem" ).draggable();});
-	//}
 }
 
 function openAssignment(link) {
@@ -120,7 +119,6 @@ function setLocation() {
 	qLayout.width = document.getElementById('questpathBlockContainer').offsetWidth;
 	qLayout.qItemLayout = new Array();
 	var k = 0;
-	//TODO make sure we add new items here
 	for (var i = 0; i < quests.length; i++) {
 		for (var j = 0; j < quests[i].questPathItems.length; j++) {
 			var qItem = new Object();
@@ -130,8 +128,18 @@ function setLocation() {
 			qLayout.qItemLayout[k] = qItem;
 			k++;
 		}
-	} 
+	}
+	var nonQuestList = jQuery('.newQuestItem');
+	nonQuestList.each(function() {
+		var qItem = new Object();
+		qItem.extContentId = jQuery(this).attr('id');
+		qItem.top = document.getElementById(qItem.extContentId).style.top;
+		qItem.left = document.getElementById(qItem.extContentId).style.left;
+		qLayout.qItemLayout[k] = qItem;
+		k++;
+	});
 	document.getElementById("questLayout").value = JSON.stringify(qLayout);
+	document.getElementById("newRules").value = JSON.stringify(newRules);
 }
 
 /*
@@ -159,7 +167,7 @@ function initLayout() {
 	}
 }
 
-totalStudents = 0;
+var totalStudents = 0;
 
 function setInstructorCSSClass(questStats) {
 	for (var i = 0; i < questStats.length; i++) {
@@ -169,6 +177,8 @@ function setInstructorCSSClass(questStats) {
 		jQuery('#' + questStats[i].externalContentId).addClass('p' + percentPassed);
 	}
 }
+
+var newRules = Array();
 
 function buildDialog() {
 	jQuery( "#ruleDialog" ).dialog({
@@ -203,23 +213,36 @@ function buildDialog() {
 	    			  alert("Minimum Score Must Be Numeric and Greater Than 0");
 	    			  errorFree = false;
 	    		  }
-	    		  //console.log(fromId + " - " + jQuery("#" + fromId).parent().attr('id'));
-	    		  //console.log(toId + " - " + jQuery("#" + toId).parent().attr('id'));
 	    		  if (errorFree) {
+		    		  var rule = new Object();
+		    		  rule.fromId = fromId;
+		    		  rule.toId = toId;
+		    		  rule.typeRule = typeRule;
+		    		  rule.minValue = minValue;
+		    		  newRules.push(rule);
 	    			  buildNewConnection(fromId, toId);
 	    			  jQuery( this ).dialog( "close" );
 	    		  };
 	           }
 	      }
 	});
-	jQuery('#ruleButton').on('click', function() {jQuery('#ruleDialog').dialog("open");});
+	jQuery('#ruleButton').on('click', function() {
+		jQuery('#toItem').empty();
+		var nonQuestList = jQuery('.nonQuestItem');
+		nonQuestList.each(function() {
+			jQuery('#toItem')
+	        .append(jQuery("<option></option>")
+	        .attr("value",jQuery(this).attr('id'))
+	        .text(jQuery(this).html())); 
+		});
+		jQuery('#ruleDialog').dialog("open");
+	});
 }
 
 function buildNewConnection(fromId, toId) {
-	//add item if it has nonQuestItem to quests array
 	jQuery('#' + fromId).addClass("questItem").removeClass("nonQuestItem");
 	jQuery('#' + toId).addClass("questItem").removeClass("nonQuestItem");
-	//TODO mark new toID with new class
+	jQuery('#' + toId).addClass("questItem").addClass("newQuestItem");
 	var color = "red";
 	jsPlumb.importDefaults({
 		Connector : [ "Bezier", { curviness:40 } ],
@@ -241,18 +264,23 @@ function buildNewConnection(fromId, toId) {
 
 function removeNewConnection(connection) {
 	var c = confirm("Confirm Deletion!");
-	//TODO for debugging console.log(c);
+	var len = newRules.length;
 	if (c === true) {
+		while (len--) {
+			if (newRules[len].toId === connection.targetId) {
+				newRules.splice(len,1);
+			}
+		}
+		jQuery('#' + connection.targetId).addClass("questItem").removeClass("newQuestItem");
+		jQuery('#' + connection.targetId).addClass("questItem").addClass("nonQuestItem");
 		jsPlumb.detach(connection);
 	}
 }
 
 function positionNonQuestItems() {
 	nonQuestList = jQuery('.nonQuestItem');
-	//console.log(nonQuestList.length);
 	init_height = document.getElementById('questpathBlockContainer').offsetHeight;
 	init_width = document.getElementById('questpathBlockContainer').offsetWidth;
-	//console.log(init_height + ":" + init_width);
 	var newTop = init_height - init_height/15;
 	var newLeft = 0;
 	var count = 0;
@@ -271,11 +299,12 @@ function positionNonQuestItems() {
 
 function testGetConnectors() {
 	var targetArray = new Array();
-	var nonQuestList = jQuery('.nonQuestItem');
+	var nonQuestList = jQuery('.newQuestItem');
 	nonQuestList.each(function() {
 		targetArray.push(jQuery(this).attr('id'));
 	});
 	console.log(targetArray);
 	var connectionList = jsPlumb.getConnections({target: targetArray});
 	console.log(connectionList);
+	console.log(newRules);
 }

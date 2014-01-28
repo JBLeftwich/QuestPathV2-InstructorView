@@ -121,6 +121,7 @@ Minimum Score or Percent: <input type='text' id='minValue' size='5'/>
 	<bbNG:dataCollection>
 		<bbNG:step title="QuestPath Configuration 1.1" >
 			<input type="hidden" id="questLayout" name="questLayout" value='<%=proc.qLayout%>' />
+			<input type="hidden" id="newRules" name="newRules" value='' />
 			<input type="hidden" name="course_id" value="<%=request.getParameter("course_id")%>" />
 		</bbNG:step>
 		<bbNG:stepSubmit>
