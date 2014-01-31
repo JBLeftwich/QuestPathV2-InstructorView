@@ -18,6 +18,7 @@
     
     Author: Jonathan Leftwich  Graduate Student at Jacksonville State University
 -->
+<%@page import="org.json.JSONArray"%>
 <%@page import="blackboard.data.content.avlrule.AvailabilityRule"%>
 <%@page import="com.jsu.cs596.questpath.build.rules.RuleBuilder"%>
 <%@page import="blackboard.persist.PersistenceException"%>
@@ -27,6 +28,7 @@
 <%@page import="blackboard.data.course.Course"%>
 <%@page import="blackboard.platform.BbServiceManager"%>
 <%@page import="blackboard.persist.BbPersistenceManager"%>
+<%@ taglib uri="/bbData" prefix="bbData"%>
 <%@page import="blackboard.persist.content.ContentDbPersister"%>
 <%@page import="blackboard.base.FormattedText"%>
 <%@page import="java.util.ArrayList"%>
@@ -35,7 +37,6 @@
 <%@page import="java.util.List"%>
 <%@page import="blackboard.persist.content.ContentDbLoader"%>
 <%@page import="blackboard.persist.navigation.CourseTocDbLoader"%>
-<%@ taglib uri="/bbData" prefix="bbData"%>
 <%@ taglib uri="/bbNG" prefix="bbNG"%>
 <bbNG:includedPage ctxId="ctx">
 <%              
