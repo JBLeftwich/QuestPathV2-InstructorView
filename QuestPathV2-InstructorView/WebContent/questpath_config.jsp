@@ -61,7 +61,6 @@
 			j++;
 		}
 		for (QuestPathItem qpI : proc.nonQuestItems) {
-			
 				if (!procQI.contains(qpI.getExtContentId())) {
 					if (qpI.isGradable()) {ruleOptions.append("<option value='" + qpI.getExtContentId() + "'>" + qpI.getName() + "</option>");}
 					if (!qpI.isGradable()) {rewardRuleOptions.append("<option value='" + qpI.getExtContentId() + "'>" + qpI.getName() + "</option>");}

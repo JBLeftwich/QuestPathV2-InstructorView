@@ -18,6 +18,7 @@
     
     Author: Jonathan Leftwich  Graduate Student at Jacksonville State University
 -->
+<%@page import="blackboard.platform.persistence.PersistenceServiceFactory"%>
 <%@page import="org.json.JSONArray"%>
 <%@page import="blackboard.data.content.avlrule.AvailabilityRule"%>
 <%@page import="com.jsu.cs596.questpath.build.rules.RuleBuilder"%>
@@ -28,7 +29,6 @@
 <%@page import="blackboard.data.course.Course"%>
 <%@page import="blackboard.platform.BbServiceManager"%>
 <%@page import="blackboard.persist.BbPersistenceManager"%>
-<%@ taglib uri="/bbData" prefix="bbData"%>
 <%@page import="blackboard.persist.content.ContentDbPersister"%>
 <%@page import="blackboard.base.FormattedText"%>
 <%@page import="java.util.ArrayList"%>
@@ -38,10 +38,12 @@
 <%@page import="blackboard.persist.content.ContentDbLoader"%>
 <%@page import="blackboard.persist.navigation.CourseTocDbLoader"%>
 <%@ taglib uri="/bbNG" prefix="bbNG"%>
+<%@ taglib uri="/bbData" prefix="bbData"%>
 <bbNG:includedPage ctxId="ctx">
 <%              
 			String errorMsg = "";
-			BbPersistenceManager bbPm = BbServiceManager.getPersistenceService().getDbPersistenceManager();			
+			//BbPersistenceManager bbPm = BbServiceManager.getPersistenceService().getDbPersistenceManager();
+			BbPersistenceManager bbPm = PersistenceServiceFactory.getInstance().getDbPersistenceManager();
 			Id courseId = bbPm.generateId(Course.DATA_TYPE,request.getParameter("course_id"));
 			String qLayout = request.getParameter("questLayout");
 			String newRules = request.getParameter("newRules");

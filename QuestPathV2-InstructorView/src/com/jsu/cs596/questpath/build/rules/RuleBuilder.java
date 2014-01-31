@@ -6,19 +6,19 @@ import java.util.List;
 
 import org.json.JSONArray;
 
-import blackboard.data.ValidationException;
 import blackboard.data.content.Content;
 import blackboard.data.content.avlrule.AvailabilityCriteria;
 import blackboard.data.content.avlrule.AvailabilityRule;
 import blackboard.data.content.avlrule.GradeRangeCriteria;
 import blackboard.data.gradebook.Lineitem;
 import blackboard.persist.BbPersistenceManager;
-import blackboard.persist.PersistenceException;
 import blackboard.persist.content.avlrule.AvailabilityCriteriaDbPersister;
 import blackboard.persist.content.avlrule.AvailabilityRuleDbPersister;
 import blackboard.persist.gradebook.LineitemDbLoader;
 import blackboard.platform.BbServiceManager;
 import blackboard.platform.context.Context;
+import blackboard.platform.persistence.PersistenceService;
+import blackboard.platform.persistence.PersistenceServiceFactory;
 
 public class RuleBuilder {
 
@@ -27,7 +27,8 @@ public class RuleBuilder {
 	public void buildRule(Context ctx, List<Content> children, JSONArray newRules) throws Exception {
 		AvailabilityRuleDbPersister arP = AvailabilityRuleDbPersister.Default.getInstance();
 		AvailabilityCriteriaDbPersister acP = AvailabilityCriteriaDbPersister.Default.getInstance();
-		BbPersistenceManager bbPm = BbServiceManager.getPersistenceService().getDbPersistenceManager();
+		BbPersistenceManager bbPm = PersistenceServiceFactory.getInstance().getDbPersistenceManager();
+		//BbPersistenceManager bbPm = BbServiceManager.getPersistenceService().getDbPersistenceManager();
 		List<AvailabilityCriteria> acS = new ArrayList<AvailabilityCriteria>();
 		AvailabilityRule ar = new AvailabilityRule();
 		GradeRangeCriteria ac = new GradeRangeCriteria();
