@@ -18,6 +18,8 @@
     
     Author: Jonathan Leftwich  Graduate Student at Jacksonville State University
 -->
+<%@page import="blackboard.data.content.avlrule.AvailabilityRule"%>
+<%@page import="com.jsu.cs596.questpath.build.rules.RuleBuilder"%>
 <%@page import="blackboard.persist.PersistenceException"%>
 <%@page import="blackboard.data.ValidationException"%>
 <%@page import="blackboard.data.content.CourseDocument"%>
@@ -42,6 +44,10 @@
 			Id courseId = bbPm.generateId(Course.DATA_TYPE,request.getParameter("course_id"));
 			String qLayout = request.getParameter("questLayout");
 			String newRules = request.getParameter("newRules");
+			JSONArray jA = new JSONArray(newRules);
+// 			for (int i = 0; i < jA.length(); i++) {
+// 				output += " " +  jA.getJSONObject(i).get("toId");	
+// 			}
 			CourseTocDbLoader cTocLoader = CourseTocDbLoader.Default.getInstance();
 			ContentDbLoader cntDbLoader = ContentDbLoader.Default.getInstance();
 			List<CourseToc> tList = cTocLoader.loadByCourseId(courseId);
@@ -103,6 +109,13 @@
 			catch (Exception e) {
 				errorMsg = e.getLocalizedMessage();
 			}
+			try {
+				RuleBuilder rb = new RuleBuilder();
+				rb.buildRule(ctx, children, jA);
+			}
+			catch (Exception e) {
+				errorMsg = "Rules " + e.getLocalizedMessage();
+			}
 			
 %>
 <body>
@@ -112,6 +125,7 @@
 <script type="text/javascript">
 var errorMsg = '<%=errorMsg%>';
 if (errorMsg.length > 0) {
+	console.log(errorMsg);
 	alert(errorMsg);
 }
 history.go(-2);

@@ -236,6 +236,7 @@ function buildDialog() {
 	        .text(jQuery(this).html())); 
 		});
 		jQuery('#ruleDialog').dialog("open");
+		//TODO default form, set From, minValue, typeRule to default values
 	});
 }
 
@@ -297,6 +298,7 @@ function positionNonQuestItems() {
 	});
 }
 
+//TODO modify to allow source to be newQuestItem
 function testGetConnectors() {
 	var targetArray = new Array();
 	var nonQuestList = jQuery('.newQuestItem');
@@ -308,3 +310,25 @@ function testGetConnectors() {
 	console.log(connectionList);
 	console.log(newRules);
 }
+
+//function testGetConnectorsX() {
+//	var nonQuestList = jQuery('.newQuestItem.nonQuestItem');
+//	nonQuestList.each(function() {
+//		console.log(connectionExist(jQuery(this).attr('id')));
+//      if connectionExists push id to list array, use this when setting location
+//	});
+//}
+//
+//function connectionExist(id) {
+//	console.log(id);
+//	var targetArray = new Array();
+//	var sourceArray = new Array();
+//	targetArray.push(id);
+//	sourceArray.push(id);
+//	var elementList = jsPlumb.selectEndpoints({
+//		element: targetArray 
+//	});
+//	console.log(elementList);
+//	console.log(elementList.length);
+//	return (elementList.length > 0) ? "true" : "false";
+//}
