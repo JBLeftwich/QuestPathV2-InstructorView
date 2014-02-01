@@ -44,7 +44,9 @@ public class QuestPathUtil {
 		for (QuestPathItem qPI : allItems) {
 			if (qPI.getChildContent().size() == 0 && qPI.getParentContent().size() == 0) 
 			{
-				finalList.add(qPI);
+				if (!qPI.getName().toUpperCase().equals("QUESTPATH")) {
+					finalList.add(qPI);
+				}
 			}
 		}
 		return finalList;

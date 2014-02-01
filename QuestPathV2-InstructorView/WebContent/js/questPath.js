@@ -129,14 +129,33 @@ function setLocation() {
 			k++;
 		}
 	}
-	var nonQuestList = jQuery('.newQuestItem');
+//	var nonQuestList = jQuery('.newQuestItem.nonQuestItem');
+//	nonQuestList.each(function() {
+//		console.log(connectionExist(jQuery(this).attr('id')));
+//      if connectionExists push id to list array, use this when setting location
+//	});
+
+	var newQuestList = jQuery('.newQuestItem');
+	newQuestList.each(function() {
+		if (connectionExist(jQuery(this).attr('id'))) {
+			var qItem = new Object();
+			qItem.extContentId = jQuery(this).attr('id');
+			qItem.top = document.getElementById(qItem.extContentId).style.top;
+			qItem.left = document.getElementById(qItem.extContentId).style.left;
+			qLayout.qItemLayout[k] = qItem;
+			k++;
+		}
+	});
+	var nonQuestList = jQuery('.nonQuestItem');
 	nonQuestList.each(function() {
-		var qItem = new Object();
-		qItem.extContentId = jQuery(this).attr('id');
-		qItem.top = document.getElementById(qItem.extContentId).style.top;
-		qItem.left = document.getElementById(qItem.extContentId).style.left;
-		qLayout.qItemLayout[k] = qItem;
-		k++;
+		if (connectionExist(jQuery(this).attr('id'))) {
+			var qItem = new Object();
+			qItem.extContentId = jQuery(this).attr('id');
+			qItem.top = document.getElementById(qItem.extContentId).style.top;
+			qItem.left = document.getElementById(qItem.extContentId).style.left;
+			qLayout.qItemLayout[k] = qItem;
+			k++;
+		}
 	});
 	document.getElementById("questLayout").value = JSON.stringify(qLayout);
 	document.getElementById("newRules").value = JSON.stringify(newRules);
@@ -235,13 +254,14 @@ function buildDialog() {
 	        .attr("value",jQuery(this).attr('id'))
 	        .text(jQuery(this).html())); 
 		});
+		jQuery('#minValue').val("" );
 		jQuery('#ruleDialog').dialog("open");
 		//TODO default form, set From, minValue, typeRule to default values
 	});
 }
 
 function buildNewConnection(fromId, toId) {
-	jQuery('#' + fromId).addClass("questItem").removeClass("nonQuestItem");
+//	jQuery('#' + fromId).addClass("questItem").removeClass("nonQuestItem");
 	jQuery('#' + toId).addClass("questItem").removeClass("nonQuestItem");
 	jQuery('#' + toId).addClass("questItem").addClass("newQuestItem");
 	var color = "red";
@@ -299,17 +319,17 @@ function positionNonQuestItems() {
 }
 
 //TODO modify to allow source to be newQuestItem
-function testGetConnectors() {
-	var targetArray = new Array();
-	var nonQuestList = jQuery('.newQuestItem');
-	nonQuestList.each(function() {
-		targetArray.push(jQuery(this).attr('id'));
-	});
-	console.log(targetArray);
-	var connectionList = jsPlumb.getConnections({target: targetArray});
-	console.log(connectionList);
-	console.log(newRules);
-}
+//function testGetConnectors() {
+//	var targetArray = new Array();
+//	var nonQuestList = jQuery('.newQuestItem');
+//	nonQuestList.each(function() {
+//		targetArray.push(jQuery(this).attr('id'));
+//	});
+//	console.log(targetArray);
+//	var connectionList = jsPlumb.getConnections({target: targetArray});
+//	console.log(connectionList);
+//	console.log(newRules);
+//}
 
 //function testGetConnectorsX() {
 //	var nonQuestList = jQuery('.newQuestItem.nonQuestItem');
@@ -319,16 +339,11 @@ function testGetConnectors() {
 //	});
 //}
 //
-//function connectionExist(id) {
-//	console.log(id);
-//	var targetArray = new Array();
-//	var sourceArray = new Array();
-//	targetArray.push(id);
-//	sourceArray.push(id);
-//	var elementList = jsPlumb.selectEndpoints({
-//		element: targetArray 
-//	});
-//	console.log(elementList);
-//	console.log(elementList.length);
-//	return (elementList.length > 0) ? "true" : "false";
-//}
+function connectionExist(id) {
+	var targetArray = new Array();
+	targetArray.push(id);
+	var elementList = jsPlumb.selectEndpoints({
+		element: targetArray 
+	});
+	return (elementList.length > 0) ? "true" : "false";
+}

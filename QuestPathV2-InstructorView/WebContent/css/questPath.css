@@ -28,7 +28,7 @@
 	border-radius: 2.0em;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	word-wrap:break-word;
+/* 	word-wrap:break-word; */
 }
 
 .nonQuestItem {
