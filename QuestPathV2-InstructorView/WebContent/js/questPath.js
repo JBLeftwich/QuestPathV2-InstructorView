@@ -57,9 +57,9 @@ function moveItems() {
 					x.style.left = (parseInt(questLayout.qItemLayout[i].left) * widthRatio) + "px";
 				}
 			}
-		} catch(exception) {initLayout();}//default to init layout if unable to build layout
+		} catch(exception) {if (questTier != null) {initLayout();}}//default to init layout if unable to build layout
 	} else {
-		initLayout();
+		if (questTier != null) {initLayout();}
 	}
 };
 
@@ -72,7 +72,7 @@ function waitForDependencies() {
 	//	setTimeout(waitForDependencies, 0200);}    
 	//else {
 		jsPlumb.bind("ready", function() {
-			initLayout(); 
+			if (questTier != null) {initLayout();} 
 			moveItems(); 
 			positionNonQuestItems();
 			setTimeout(jsPlumbDemo.init, 0200); 
@@ -193,6 +193,9 @@ function setInstructorCSSClass(questStats) {
 		var hybridPassed = questStats[i].passedCount;
 		totalStudents = questStats[i].passedCount + questStats[i].attemptedCount + questStats[i].lockedCount;
 		var percentPassed = Math.round(hybridPassed/totalStudents / .1) * 10;
+		if (totalStudents === 0) {
+			percentPassed = 0;
+		}
 		jQuery('#' + questStats[i].externalContentId).addClass('p' + percentPassed);
 	}
 }
