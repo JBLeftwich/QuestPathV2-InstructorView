@@ -228,7 +228,7 @@ function buildDialog() {
 	    			  errorFree = false;
 	    		  }
 	    		  if (typeRule.length == 0) {
-	    			  alert("Adaptive Release Type Rule");
+	    			  alert("Adaptive Release Type Rule Required");
 	    			  errorFree = false;
 	    		  }
 	    		  if (isNaN(minValue) || minValue.length === 0 || minValue === 0) {
