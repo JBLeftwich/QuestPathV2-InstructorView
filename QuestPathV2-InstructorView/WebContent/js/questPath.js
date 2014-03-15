@@ -209,46 +209,35 @@ function buildDialog() {
 	      width: 500,
 	      modal: true, 
 	      buttons: {
-	    	  Ok: function() {
-	    		  var errorFree = true;
-	    		  var fromId = jQuery('#fromItem').val();
-	    		  var toId = jQuery('#toItem').val();
-	    		  var typeRule = jQuery( "input:radio[name=ruleRadio]:checked" ).val();
-	    		  var minValue = jQuery('#minValue').val();
-	    		  if (fromId.length === 0) {
-	    			  alert("From Quest Item Required");
-	    			  errorFree = false;
-	    		  }
-	    		  if (toId.length === 0) {
-	    			  alert("To Quest Item Required");
-	    			  errorFree = false;
-	    		  }
-	    		  if (toId === fromId) {
-	    			  alert("From and To Must Be Different Items");
-	    			  errorFree = false;
-	    		  }
-	    		  if (typeRule.length == 0) {
-	    			  alert("Adaptive Release Type Rule Required");
-	    			  errorFree = false;
-	    		  }
-	    		  if (isNaN(minValue) || minValue.length === 0 || minValue === 0) {
-	    			  alert("Minimum Score Must Be Numeric and Greater Than 0");
-	    			  errorFree = false;
-	    		  }
-	    		  if (errorFree) {
-		    		  var rule = new Object();
-		    		  rule.fromId = fromId;
-		    		  rule.toId = toId;
-		    		  rule.typeRule = typeRule;
-		    		  rule.minValue = minValue;
-		    		  newRules.push(rule);
-	    			  buildNewConnection(fromId, toId);
+	    	  "Save": function() {
+	    		  if (validateRules()) {
 	    			  jQuery( this ).dialog( "close" );
+	    		  }
+	           },
+	         "Save and Add Another Criteria": function() {
+	    		  if (validateRules()) {
+	    			  initDialog(true);
 	    		  };
-	           }
+	         },
+	         "Cancel": function() {
+	        	 jQuery( this ).dialog( "close" );
+	         }
 	      }
 	});
 	jQuery('#ruleButton').on('click', function() {
+		jQuery('#ruleNumber').val((new Date).getTime());
+		initDialog(false);
+		jQuery('#ruleDialog').dialog("open");
+		//TODO default form, set From, minValue, typeRule to default values
+	});
+}
+
+function initDialog(disableTo) {
+
+	if (disableTo) {
+		jQuery('#toItem').prop('disabled', true);
+	}else  {
+		jQuery('#toItem').prop('disabled', false);
 		jQuery('#toItem').empty();
 		var nonQuestList = jQuery('.nonQuestItem');
 		nonQuestList.each(function() {
@@ -257,15 +246,51 @@ function buildDialog() {
 	        .attr("value",jQuery(this).attr('id'))
 	        .text(jQuery(this).html())); 
 		});
-		jQuery('#minValue').val("" );
-		jQuery('#ruleDialog').dialog("open");
-		//TODO default form, set From, minValue, typeRule to default values
-	});
+	}
+	jQuery('#minValue').val("" );
+}
+
+function validateRules() {
+	  var errorFree = true;
+	  var fromId = jQuery('#fromItem').val();
+	  var toId = jQuery('#toItem').val();
+	  var typeRule = jQuery( "input:radio[name=ruleRadio]:checked" ).val();
+	  var minValue = jQuery('#minValue').val();
+	  if (fromId.length === 0) {
+		  alert("From Quest Item Required");
+		  errorFree = false;
+	  }
+	  if (toId.length === 0) {
+		  alert("To Quest Item Required");
+		  errorFree = false;
+	  }
+	  if (toId === fromId) {
+		  alert("From and To Must Be Different Items");
+		  errorFree = false;
+	  }
+	  if (typeRule.length == 0) {
+		  alert("Adaptive Release Type Rule Required");
+		  errorFree = false;
+	  }
+	  if (isNaN(minValue) || minValue.length === 0 || minValue === 0) {
+		  alert("Minimum Score Must Be Numeric and Greater Than 0");
+		  errorFree = false;
+	  }
+	  if (errorFree) {
+		  var rule = new Object();
+		  rule.fromId = fromId;
+		  rule.toId = toId;
+		  rule.typeRule = typeRule;
+		  rule.minValue = minValue;
+		  rule.ruleNumber = jQuery('#ruleNumber').val();
+		  newRules.push(rule);
+		  buildNewConnection(fromId, toId);
+	  };
+	  return errorFree;
 }
 
 function buildNewConnection(fromId, toId) {
-//	jQuery('#' + fromId).addClass("questItem").removeClass("nonQuestItem");
-	jQuery('#' + toId).addClass("questItem").removeClass("nonQuestItem");
+	//jQuery('#' + toId).addClass("questItem").removeClass("nonQuestItem");
 	jQuery('#' + toId).addClass("questItem").addClass("newQuestItem");
 	var color = "red";
 	jsPlumb.importDefaults({

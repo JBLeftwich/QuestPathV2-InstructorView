@@ -128,8 +128,12 @@
 <script type="text/javascript">
 var errorMsg = '<%=errorMsg%>';
 if (errorMsg.length > 0) {
-	console.log(errorMsg);
-	alert(errorMsg);
+	try{
+		console.log(errorMsg);
+	}
+	catch(err) {
+		alert(errorMsg);
+	}
 }
 history.go(-2);
 </script>

@@ -116,6 +116,7 @@ To <select id='toItem'><%=ruleOptions.toString()%><%=rewardRuleOptions.toString(
     <input type="radio" id="radio2" name="ruleRadio" value= '2' /><label for="radio2">Percent Based</label>
 </div>
 Minimum Score or Percent: <input type='text' id='minValue' size='5'/>
+<input type='hidden' id="ruleNumber" value='0' />
 </div> 
 	<bbNG:dataCollection>
 		<bbNG:step title="QuestPath Configuration 1.1" >
