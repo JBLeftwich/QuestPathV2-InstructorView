@@ -228,7 +228,6 @@ function buildDialog() {
 		jQuery('#ruleNumber').val((new Date).getTime());
 		initDialog(false);
 		jQuery('#ruleDialog').dialog("open");
-		//TODO default form, set From, minValue, typeRule to default values
 	});
 }
 
