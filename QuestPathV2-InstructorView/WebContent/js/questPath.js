@@ -237,14 +237,15 @@ function initDialog(disableTo) {
 		jQuery('#toItem').prop('disabled', true);
 	}else  {
 		jQuery('#toItem').prop('disabled', false);
-		jQuery('#toItem').empty();
-		var nonQuestList = jQuery('.nonQuestItem');
-		nonQuestList.each(function() {
-			jQuery('#toItem')
-	        .append(jQuery("<option></option>")
-	        .attr("value",jQuery(this).attr('id'))
-	        .text(jQuery(this).html())); 
-		});
+		//This logic only allows items without adaptive release to be in the TO drop down
+		//jQuery('#toItem').empty();
+		//var nonQuestList = jQuery('.nonQuestItem');
+		//nonQuestList.each(function() {
+		//	jQuery('#toItem')
+	    //   .append(jQuery("<option></option>")
+	    //    .attr("value",jQuery(this).attr('id'))
+	    //    .text(jQuery(this).html())); 
+		//});
 	}
 	jQuery('#minValue').val("" );
 }

@@ -103,9 +103,23 @@ public class QuestPathUtil {
 	 */
 	public List<QuestPathItem> setParentChildList(List<QuestPathItem> allItems, List<QuestRule> allRules) {
 		for (QuestPathItem item : allItems) {
+			String unlockRule = "";
+			boolean subsequentRule = false;
 			for (QuestRule rule : allRules) {
+				boolean firstCriteria = true;
 				if (rule.getExtContentId().equals(item.getExtContentId())) {
+					if (!subsequentRule) {
+						unlockRule = " Item will be unlocked when the following Quest Path Items are completed: ";
+					}
 					for (RuleCriteria crit : rule.getCriterias()) {
+						if (subsequentRule) {
+							unlockRule += " OR "; 
+						}
+						if (!firstCriteria) {
+							unlockRule += " AND ";
+						}
+						unlockRule += contentMap.get(crit.getParentContent());
+						subsequentRule = false; firstCriteria = false;
 						item.getParentContent().add(crit.getParentContent());
 						for(QuestPathItem item2 : allItems) {
 							if(item2.getExtContentId().equals(crit.getParentContent())) {
@@ -113,21 +127,23 @@ public class QuestPathUtil {
 							}
 						}
 					}
+					subsequentRule = true;
 				}
 			}
 			if (item.getParentContent().size() > 0) {
-				boolean subsequentRule = false;
-				if (item.getUnlockRule().length() > 0) {subsequentRule = true;}
-				StringBuilder sb = new StringBuilder();
-				for (String pc : item.getParentContent()) {
-					if (!subsequentRule) {
-						sb.append(" Item will be unlocked when the following Quest Path Items are completed: " + contentMap.get(pc));
-						subsequentRule = true;
-					} else {
-						sb.append("," + contentMap.get(pc));
-					}
-				}
-				item.setUnlockRule(sb.toString());
+//				boolean subsequentRule = false;
+//				if (item.getUnlockRule().length() > 0) {subsequentRule = true;}
+//				StringBuilder sb = new StringBuilder();
+//				for (String pc : item.getParentContent()) {
+//					if (!subsequentRule) {
+//						sb.append(" Item will be unlocked when the following Quest Path Items are completed: " + contentMap.get(pc));
+//						subsequentRule = true;
+//					} else {
+//						sb.append("," + contentMap.get(pc));
+//					}
+//				}
+//				item.setUnlockRule(sb.toString());
+				item.setUnlockRule(unlockRule + ".");
 			}
 		}
 		return allItems;
@@ -297,7 +313,7 @@ public class QuestPathUtil {
 								if (ruleC.isGradeRange()) {
 									if (item.getPointsEarned() > 0 &&  item.getPointsEarned() < ruleC.getMinScore()) {
 										attempted = true;
-										item.setCompleteRule("Rule " + i + " Quest Path Item will be complete when a score of " + ruleC.getMinScore() +  " or higher is scored.");
+										item.setCompleteRule(" Rule " + i + " Quest Path Item will be complete when a score of " + ruleC.getMinScore() +  " or higher is scored.");
 										i++;
 									}
 									else if (item.getPointsEarned() >= ruleC.getMinScore()) {
