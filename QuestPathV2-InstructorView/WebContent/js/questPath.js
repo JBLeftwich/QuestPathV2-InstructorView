@@ -316,7 +316,7 @@ function removeNewConnection(connection) {
 	var len = newRules.length;
 	if (c === true) {
 		while (len--) {
-			if (newRules[len].toId === connection.targetId) {
+			if (newRules[len].toId === connection.targetId && newRules[len].fromId === connection.sourceId) {
 				newRules.splice(len,1);
 			}
 		}
