@@ -61,7 +61,7 @@
 			<div id="<%=qpI.getExtContentId()%>" class="questItem <%=qpAtt.getStatusClassName() %>"
 			title="<%=qpAtt.getTitle()%>" 
 			<% if (!qpI.isLocked() && !proc.isUserAnInstructor) { %>
-			ondblclick="openAssignment('execute/uploadAssignment?content_id=<%=qpI.getExtContentId()%>&course_id=<%=ctx.getCourseId().toExternalString()%>&assign_group_id=&mode=view');"
+			ondblclick="openAssignment('assignment/uploadAssignment?content_id=<%=qpI.getExtContentId()%>&course_id=<%=ctx.getCourseId().toExternalString()%>&assign_group_id=&mode=view');"
 			<%} %>><%=qpI.getName()%></div>
 		<%
 			procQI.add(qpI.getExtContentId());

@@ -39,9 +39,11 @@
 		</module-defs>
 		<!-- code permissions required for proper operation -->
 		<permissions>
-			<permission type="persist" name="Content" actions="create,modify,delete" />
+			<permission type="attribute" name="Group" actions="get" />
+    		<permission type="attribute" name="GroupMembership" actions="get" />
 			<permission type="attribute" name="user.authinfo" actions="get,set" />
 			<permission type="attribute" name="user.personalinfo" actions="get,set" />
+			<permission type="persist" name="Content" actions="create,modify,delete" />
 		</permissions>
 	</plugin>
 </manifest>

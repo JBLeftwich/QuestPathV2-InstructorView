@@ -104,9 +104,12 @@ function waitForDependencies() {
 function openAssignment(link) {
 	urlLoc = window.location;
 	if (urlLoc.toString().indexOf('detach_module') !== -1) {
-		window.location.href = '../../../blackboard/' + link;	
+		//window.location.href = '../../../blackboard/' + link;	
+		window.location.href = '/webapps/' + link;
 	}
-	else {window.location.href = '../../' + link;}
+	else {
+		window.location.href = '/webapps/' + link;
+	}
 
 }
 
